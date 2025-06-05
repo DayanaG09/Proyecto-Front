@@ -22,7 +22,7 @@ function ModalSupplier({ onClose, onRegistrar }) {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h3>Registrar Laboratorio</h3>
+        <h3>Registrar Proveedor</h3>
         <form onSubmit={handleSubmit} className="formulario">
           <label>ID</label>
           <input type="text" name="id" onChange={handleChange} required />

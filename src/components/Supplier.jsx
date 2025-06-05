@@ -2,16 +2,25 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ModalSupplier from "./ModalSupplier";
 import logo from "../assets/logo.png";
-import "../styles/home.css"; // Importamos el CSS de la vista general
+import "../styles/home.css"; 
+import UpdateSupplier from "./UpdateSupplier";
+import ModalConfirmation from "./ModalConfirmation";
 import "../styles/vistaGeneral.css";
 
 function Supplier() {
   const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState("");
   const [Proveedores, setProveedores] = useState([
-    { id: "LAB001", nombre: "Genfar", direccion: "Calle 123", telefono: "3214567890" },
+    { id: "LAB001", nombre: "Genfar", direccion: "Calle 123", telefono: "3214567890", email: "dayaya@gmail.com"},
   ]);
   const [mostrarModal, setMostrarModal] = useState(false);
+
+   const [modalEditarVisible, setModalEditarVisible] = useState(false);
+    const [proEditando, setProEditando] = useState(null);
+    const [indexAEditar, setIndexAEditar] = useState(null);
+
+      const [modalVisible, setModalVisible] = useState(false);
+      const [indexAEliminar, setIndexAEliminar] = useState(null);
 
   const handleLogout = () => {
     console.log("Sesión cerrada");
@@ -30,6 +39,28 @@ function Supplier() {
     setProveedores([...Proveedores, nuevo]);
   };
 
+  const eliminarLaboratorio = (index) => {
+    const nuevos = [...Proveedores];
+    nuevos.splice(index, 1);
+    setProveedores(nuevos);
+  };
+
+  const confirmar = () => {
+    if (indexAEliminar !== null) {
+      eliminarLaboratorio(indexAEliminar);
+      setIndexAEliminar(null);
+      setModalVisible(false);
+    }
+  };
+
+  const guardarProveedorEditado = (actualizado) => {
+    const nuevos = [...Proveedores];
+    nuevos[indexAEditar] = actualizado;
+    setProEditando(nuevos);
+    setModalEditarVisible(false);
+    setProEditando(null);
+    setIndexAEditar(null);
+  };
   return (
     <div className="home-container">
       <header className="home-header">
@@ -76,6 +107,22 @@ function Supplier() {
                 <p>ID: {pro.id}</p>
                 <p>Dirección: {pro.direccion}</p>
                 <p>Teléfono: {pro.telefono}</p>
+                <p>Email: {pro.email}</p>
+                <div className="acciones">
+                  <button onClick={() => {
+                    setIndexAEditar(index);
+                    setProEditando(pro);
+                    setModalEditarVisible(true);
+                  }}>
+                    ✏️
+                  </button>
+                  <button onClick={() => {
+                    setIndexAEliminar(index);
+                    setModalVisible(true);
+                  }}>
+                    🗑️
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -90,6 +137,19 @@ function Supplier() {
             onRegistrar={registrarProveedor}
           />
         )}
+        <UpdateSupplier
+          show={modalEditarVisible}
+          proveedor={proEditando}
+          onSave={guardarProveedorEditado}
+          onCancel={() => setModalEditarVisible(false)}
+        />
+
+        <ModalConfirmation
+          show={modalVisible}
+          message="¿Estás seguro de que deseas eliminar este Proveedor?"
+          onConfirm={confirmar}
+          onCancel={() => setModalVisible(false)}
+        />
       </main>
     </div>
   );

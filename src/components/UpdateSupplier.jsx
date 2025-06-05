@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
-import "../styles/modal.css"; 
+import "../styles/modalUpdate.css"; 
 
-function UpdateLaboratory({ show, laboratorio, onSave, onCancel }) {
+function UpdateSupplier({ show, proveedor, onSave, onCancel }) {
   const [editado, setEditado] = useState({
     id: "",
     nombre: "",
     direccion: "",
-    telefono: ""
+    telefono: "",
+    email: ""
   });
 
   useEffect(() => {
-    if (laboratorio) {
-      setEditado(laboratorio);
+    if (proveedor) {
+      setEditado(proveedor);
     }
-  }, [laboratorio]);
+  }, [proveedor]);
 
   if (!show) return null;
 
@@ -27,8 +28,9 @@ function UpdateLaboratory({ show, laboratorio, onSave, onCancel }) {
       editado.id.trim() &&
       editado.nombre.trim() &&
       editado.direccion.trim() &&
-      editado.telefono.trim()
-    ) {
+      editado.telefono.trim()&&
+      editado.email.trim()
+    ){
       onSave(editado);
     } else {
       alert("Todos los campos son obligatorios.");
@@ -38,7 +40,7 @@ function UpdateLaboratory({ show, laboratorio, onSave, onCancel }) {
   return (
     <div className="modal-overlay">
       <div className="modal-box">
-        <h2>Editar Laboratorio</h2>
+        <h2>Editar Proveedor</h2>
         <input
           type="text"
           name="id"
@@ -67,6 +69,13 @@ function UpdateLaboratory({ show, laboratorio, onSave, onCancel }) {
           value={editado.telefono}
           onChange={handleChange}
         />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={editado.email}
+          onChange={handleChange}
+        />
         <div className="modal-actions">
           <button className="btn-confirm" onClick={handleSave}>
             Guardar
@@ -80,4 +89,4 @@ function UpdateLaboratory({ show, laboratorio, onSave, onCancel }) {
   );
 }
 
-export default UpdateLaboratory;
+export default UpdateSupplier;
