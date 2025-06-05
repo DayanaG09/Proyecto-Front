@@ -1,22 +1,22 @@
 import "../styles/Home.css";
 import logo from "../assets/logo.png";
-import farmacia from "../assets/Farmacia.jpg"; // Usa tu imagen real aquí
+import farmacia from "../assets/Farmacia.jpg"; 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Asegúrate de tener react-router-dom instalado
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState("");
 
   const handleLogout = () => {
-    // Aquí podrías limpiar localStorage, auth, etc.
+    
     console.log("Sesión cerrada");
     navigate("/login");
   };
 
   const handleSearch = (e) => {
     setBusqueda(e.target.busqueda.value);
-    // Lógica de búsqueda (puedes implementar filtros en otro componente)
+    
     console.log("Buscando:", e.target.busqueda.value);
   };
 
