@@ -10,8 +10,9 @@ function Products() {
   const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState("");
   const [productos, setProductos] = useState([
-    { nombre: "Ibuprofeno", precio: "$"+30.000 },
-    { nombre: "Paracetamol", precio: "$"+50.000 },
+    { nombre: "Ibuprofeno", precio:  300.00000 },
+    { nombre: "Amoxicilina", precio: 20.000 },
+    { nombre: "Paracetamol", precio:50.000 },
   ]);
   const [mostrarModal, setMostrarModal] = useState(false);
 
@@ -75,7 +76,7 @@ function Products() {
             {productos.map((prod, index) => (
               <div key={index} className="producto-card">
                 <h3>{prod.nombre}</h3>
-                <p>: {prod.precio}</p>
+                <p>${prod.precio.toFixed(2)}</p>
               </div>
             ))}
           </div>
