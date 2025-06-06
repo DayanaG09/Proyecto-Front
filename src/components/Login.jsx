@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "../styles/login.css";
 import logo from "../assets/logo.png";
-import ForgotPassword from "./ForgotPasswords";
-
+import RegisterUser from "../components/RegisterUser.jsx";
+import ForgotPassword from "../components/ForgotPasswords.jsx";
 
 function Login() {
+  const [showRegister, setShowRegister] = useState(false);
   const [showForgot, setShowForgot] = useState(false);
 
   return (
@@ -44,13 +45,20 @@ function Login() {
             LOGIN
           </button>
           <div className="links">
-
+            <button type="button" onClick={() => setShowRegister(true)}>
+              Registrate
+            </button>
             <button type="button" onClick={() => setShowForgot(true)}>
               olvidé mi contraseña
             </button>
           </div>
         </form>
       </div>
+
+      <RegisterUser
+        show={showRegister}
+        handleClose={() => setShowRegister(false)}
+      />
       <ForgotPassword
         show={showForgot}
         handleClose={() => setShowForgot(false)}

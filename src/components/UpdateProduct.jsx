@@ -48,6 +48,16 @@ function UpdateProduct({ show, producto, onSave, onCancel }) {
             onChange={handleChange}
             placeholder="Precio"
           />
+          <label className="checkbox-label">
+            <span>fecha ingreso</span>
+          </label>
+          <input
+            type="date"
+            name="fechaIngreso"
+            value={editado.fechaIngreso || ""}
+            onChange={handleChange}
+          />
+          
           <input
             type="text"
             name="proveedor"
@@ -69,6 +79,9 @@ function UpdateProduct({ show, producto, onSave, onCancel }) {
             onChange={handleChange}
             placeholder="Lote"
           />
+          <label className="checkbox-label">
+            <span>fecha vencimiento</span>
+          </label>
           <input
             type="date"
             name="vencimiento"
