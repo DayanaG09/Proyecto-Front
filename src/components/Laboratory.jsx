@@ -103,7 +103,6 @@ function Laboratory() {
             {laboratoriosFiltrados.map((lab, i) => (
               <div key={i} className="producto-card">
                 <h3>{lab.nombre}</h3>
-                <p>ID: {lab.id}</p>
                 <p>Dirección: {lab.direccion}</p>
                 <p>Teléfono: {lab.telefono}</p>
                 <div className="acciones">

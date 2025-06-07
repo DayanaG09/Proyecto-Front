@@ -104,7 +104,6 @@ function Supplier() {
             {Proveedores.map((pro, index) => (
               <div key={index} className="producto-card">
                 <h3>{pro.nombre}</h3>
-                <p>ID: {pro.id}</p>
                 <p>Dirección: {pro.direccion}</p>
                 <p>Teléfono: {pro.telefono}</p>
                 <p>Email: {pro.email}</p>

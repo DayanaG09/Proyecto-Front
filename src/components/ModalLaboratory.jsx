@@ -3,7 +3,6 @@ import "../styles/modal.css"; // Crea este si no existe
 
 function ModalLaboratory({ onClose, onRegistrar }) {
   const [form, setForm] = useState({
-    id: "",
     nombre: "",
     direccion: "",
     telefono: "",
@@ -24,8 +23,6 @@ function ModalLaboratory({ onClose, onRegistrar }) {
       <div className="modal-content">
         <h3>Registrar Laboratorio</h3>
         <form onSubmit={handleSubmit} className="formulario">
-          <label>ID</label>
-          <input type="text" name="id" onChange={handleChange} required />
 
           <label>Nombre</label>
           <input type="text" name="nombre" onChange={handleChange} required />

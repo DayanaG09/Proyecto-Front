@@ -76,7 +76,7 @@ function Inventory() {
 
         <div className="tabla">
           <div className="tabla-header">
-            <span>FECHA DE INGRESO</span>
+            <span>F. INGRESO</span>
             <span>NOMBRE PRODUCTO</span>
             <span>CANTIDAD</span>
             <span>PRECIO</span>

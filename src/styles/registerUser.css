@@ -25,24 +25,27 @@
 
 
 .modal-header {
-  display: flex;
-  justify-content: space-between;
+  display: flex !important;
   padding: 0%;
-  align-items: center;
-  background-color: #89a3ab;
+  color: #000000;
+  margin: 0% !important;
+  text-align: center;
+}
+
+.modal-close{
+  padding: 0%;
+  max-width: fit-content;
+  text-align: end !important;
 }
 
 .close-btn {
-  background: #ff0000;
-  size: 50%;
   position: relative;
-  right: -0.5rem;
-  top: -3.5rem;
-  color: #ffffff;
-  box-shadow: #f80303;
-  border: white;
+  right: -1rem;
+  top: -3.5rem;           
+  color: #000000;
+  /* border: white; */
   padding: 0.5rem 1rem;
-  font-size: 1rem;
+  font-size: 2rem;
   cursor: pointer;
 }
 
@@ -64,7 +67,10 @@
   display: flex;
   gap: 1rem;
   font-size: 5rem;
-
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .form-row input, select{
@@ -90,4 +96,8 @@ input, select {
 
 .submit-btn:hover {
   background-color: #6d93a0;
+}
+
+.close-btn:hover{
+ background-color: #6d93a0;
 }

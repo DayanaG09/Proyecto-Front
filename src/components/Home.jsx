@@ -1,8 +1,9 @@
 import "../styles/Home.css";
 import logo from "../assets/logo.png";
-import farmacia from "../assets/Farmacia.jpg"; 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import HomeBanner from "./HomeBanner";
+
 
 function Home() {
   const navigate = useNavigate();
@@ -60,8 +61,8 @@ function Home() {
         <button onClick={() => goTo("/inventario")}>📦 INVENTARIO</button>
       </nav>
 
-      <main className="home-main">
-        <img src={farmacia} alt="Farmacia" className="main-image" />
+      <main className="home-main"> 
+        <HomeBanner />
       </main>
     </div>
   );

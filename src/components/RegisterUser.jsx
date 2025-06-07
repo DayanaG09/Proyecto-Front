@@ -29,10 +29,11 @@ function RegisterUser({ show, handleClose }) {
     <div className="modal-backdrop">
       <div className="modal-container">
         <div className="modal-header">
-          <h2>REGISTRO DE USUARIO</h2>
-          <button onClick={handleClose} className="close-btn">
-            ×
-          </button>
+          
+          <h2>Registro Usuario</h2>
+          <div className="modal-close">
+            <button onClick={handleClose} className="close-btn">×</button>
+          </div>
         </div>
         <p className="modal-text">
           Rellene el formulario y la contraseña para iniciar sesión

@@ -24,20 +24,18 @@ function ModalSupplier({ onClose, onRegistrar }) {
       <div className="modal-content">
         <h3>Registrar Proveedor</h3>
         <form onSubmit={handleSubmit} className="formulario">
-          <label>ID</label>
-          <input type="text" name="id" onChange={handleChange} required />
-
+         
           <label>Nombre</label>
-          <input type="text" name="nombre" onChange={handleChange} required />
+          <input type="text" name="nombre" onChange={handleChange} className="modal-inputs"  required />
 
           <label>Dirección</label>
-          <input type="text" name="direccion" onChange={handleChange} required />
+          <input type="text" name="direccion" onChange={handleChange} className="modal-inputs" required />
 
           <label>Teléfono</label>
-          <input type="tel" name="telefono" onChange={handleChange} required />
+          <input type="tel" name="telefono" onChange={handleChange} className="modal-inputs" required />
           
           <label>Email</label>
-          <input type="email" name="email" onChange={handleChange} required />
+          <input type="email" name="email" onChange={handleChange}className="modal-inputs" required />
 
           <div className="modal-buttons">
             <button type="submit" className="btn-registrar">Registrar</button>
