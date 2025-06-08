@@ -1,19 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ModalProducts from "./ModalProducts";
 import logo from "../assets/logo.png";
 import "../styles/home.css";
 import "../styles/vistaGeneral.css";
 import SearchBar from "./SearchBar";
+import { getAllProducts } from "../services/productService";
 
 function Products() {
   const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState("");
-  const [productos, setProductos] = useState([
-    { nombre: "Ibuprofeno", cantidad: 30 },
-    { nombre: "Paracetamol", cantidad: 50 },
-  ]);
+  const [productos, setProductos] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
+
+  useEffect(() => {
+  getAllProducts()
+    .then((response) => {
+      setProductos(response.data);
+    })
+    .catch((error) => {
+      console.error("Error al cargar productos", error);
+    });
+}, []);
+  
 
   const handleLogout = () => {
     console.log("Sesión cerrada");
@@ -74,8 +83,8 @@ function Products() {
           <div className="productos-grid">
             {productos.map((prod, index) => (
               <div key={index} className="producto-card">
-                <h3>{prod.nombre}</h3>
-                <p>Cantidad: {prod.cantidad}</p>
+                <h3>{prod.name}</h3>
+                <p>${prod.price}</p>
               </div>
             ))}
           </div>

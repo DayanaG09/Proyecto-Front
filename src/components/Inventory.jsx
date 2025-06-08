@@ -1,16 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/inventory.css";
 import logo from "../assets/logo.png";
-import { inventarioInicial } from "./InventoryLogic";
 import ModalConfirmation from "./ModalConfirmation";
 import UpdateProduct from "./UpdateProduct";
 import  { useNavigate } from "react-router-dom";
-
+import { deleteProduct, getAllProducts, updateProduct } from "../services/productService";
+import { getAllLaboratory } from "../services/laboratoryService";
+import Toast from "./Toast";
 
 
 function Inventory() {
     const navigate = useNavigate();
-  const [productos, setProductos] = useState(inventarioInicial);
+    const [productos, setProductos] = useState([]);
+    const [laboratorios, setLaboratorios] = useState([]);
+  
+
+  useEffect(() => {
+    getAllProducts().
+    then((response) => {
+      setProductos(response.data);
+    })
+    .catch((error) => {
+      console.log("Error al cargar productos: ",error);
+    });
+
+    getAllLaboratory()
+    .then((response) => {
+      setLaboratorios(response.data);
+    })
+    .catch((error) => {
+      console.log("Error al cargar laboratorios: ", error);
+    });
+  }, [])
+  
+  const getNombreLaboratorio = (id) => {
+  const lab = laboratorios.find((l) => l.id === id);
+  return lab ? lab.name : "Desconocido";
+};
+
 
   const handleLogout = () => {
     console.log("Sesión cerrada");
@@ -26,27 +53,49 @@ function Inventory() {
   const [productoEditando, setProductoEditando] = useState(null);
   const [indexAEditar, setIndexAEditar] = useState(null);
 
-  const eliminarProducto = (index) => {
-    const nuevosProductos = [...productos];
-    nuevosProductos.splice(index, 1);
-    setProductos(nuevosProductos);
-  };
+    const [mensajeToast, setMensajeToast] = useState("");
+    const [mostrarMensaje, setMostrarMensaje] = useState(false);
 
-  const confirmar = () => {
+    const mostrarToast = (mensaje) => {
+      setMensajeToast(mensaje);
+      setMostrarMensaje(true);
+    };
+
+  const confirmarEliminar = () => {
     if (indexAEliminar !== null) {
-      eliminarProducto(indexAEliminar);
-      setIndexAEliminar(null);
-      setModalVisible(false);
+      const producto = productos[indexAEliminar]
+      deleteProduct(producto.id)
+      .then(() => {
+        const nuevosProductos = [...productos];
+        nuevosProductos.splice(indexAEliminar,1);
+        setProductos(nuevosProductos);
+        setIndexAEliminar(null);
+        setModalVisible(false);
+        mostrarToast("Producto eliminado exitosamente");
+      })
+      .catch(error => {
+        console.error("Error al eliminar producto: ", error);
+        mostrarToast("Error al eliminar producto");
+      });
+      
     }
   };
 
   const guardarProductoEditado = (productoActualizado) => {
-    const nuevosProductos = [...productos];
-    nuevosProductos[indexAEditar] = productoActualizado;
-    setProductos(nuevosProductos);
-    setModalEditarVisible(false);
-    setProductoEditando(null);
-    setIndexAEditar(null);
+    updateProduct(productoActualizado.id, productoActualizado)
+    .then(() => {
+      const nuevosProductos = [...productos];
+      nuevosProductos[indexAEditar] = productoActualizado;
+      setProductos(nuevosProductos);
+      setModalEditarVisible(false);
+      setProductoEditando(null);
+      setIndexAEditar(null);
+      mostrarToast("Producto editado exitosamente!")
+    })
+    .catch(error => {
+      console.error("Error al editar producto:", error);
+      mostrarToast("Error al editar producto");
+    });
   };
 
   return (
@@ -80,7 +129,6 @@ function Inventory() {
             <span>NOMBRE PRODUCTO</span>
             <span>CANTIDAD</span>
             <span>PRECIO</span>
-            <span>PROVEEDOR</span>
             <span>LAB</span>
             <span>LOT</span>
             <span>F.VENCIMIEN</span>
@@ -89,14 +137,13 @@ function Inventory() {
 
           {productos.map((p, i) => (
             <div key={i} className="fila">
-              <span>{p.fecha}</span>
-              <span>{p.nombre}</span>
-              <span>{p.cantidad}</span>
-              <span>{p.precio}</span>
-              <span>{p.proveedor}</span>
-              <span>{p.lab}</span>
-              <span>{p.lote}</span>
-              <span>{p.vencimiento}</span>
+              <span>{p.issueDate}</span>
+              <span>{p.name}</span>
+              <span>{p.stock}</span>
+              <span>{p.price}</span>
+              <span>{getNombreLaboratorio(p.laboratoryId)}</span>
+              <span>{p.batch}</span>
+              <span>{p.expirationDate}</span>
               <span className="acciones">
                 <button
                   onClick={() => {
@@ -125,7 +172,7 @@ function Inventory() {
         <ModalConfirmation
           show={modalVisible}
           message="¿Estás seguro de que deseas eliminar este producto?"
-          onConfirm={confirmar}
+          onConfirm={confirmarEliminar}
           onCancel={() => setModalVisible(false)}
         />
 
@@ -134,7 +181,15 @@ function Inventory() {
           producto={productoEditando}
           onSave={guardarProductoEditado}
           onCancel={() => setModalEditarVisible(false)}
+          laboratorios={laboratorios}
         />
+
+        {mostrarMensaje && (
+          <Toast 
+            mensaje={mensajeToast}
+            onClose = {() => setMostrarMensaje(false)}
+          />
+        )}
       </main>
     </div>
   );

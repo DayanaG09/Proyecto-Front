@@ -6,7 +6,7 @@ import Home from './components/Home'
 import Products from './components/products'
 import Laboratory from './components/Laboratory'
 import VentaProducto from './components/VentaProducto'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Inventory from './components/Inventory'
 import Supplier from './components/Supplier'
 
@@ -14,6 +14,9 @@ function App() {
 
   return (
     <Routes>
+      {/* Ruta inicial */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
+
   {/* Autenticación */}
   <Route path="/login" element={<Login />} />
 
