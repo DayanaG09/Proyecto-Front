@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "../styles/modalUpdate.css"; // Asegúrate de tener este archivo CSS para estilos
-import { getAllLaboratory } from "../services/laboratoryService";
 
 function UpdateProduct({ show, producto, onSave, onCancel, laboratorios }) {
   const [editado, setEditado] = useState({});

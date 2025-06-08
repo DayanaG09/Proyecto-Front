@@ -6,6 +6,7 @@ import "../styles/home.css";
 import "../styles/vistaGeneral.css";
 import SearchBar from "./SearchBar";
 import { getAllProducts } from "../services/productService";
+import Toast from "./Toast";
 
 function Products() {
   const navigate = useNavigate();
@@ -37,8 +38,25 @@ function Products() {
     navigate(ruta);
   };
 
-  const registrarProducto = (nuevo) => {
-    setProductos([...productos, nuevo]);
+  const [mensajeToast, setMensajeToast] = useState("");
+  const [mostrarMensaje, setMostrarMensaje] = useState(false);
+
+  const mostrarToast = (mensaje) => {
+      setMensajeToast(mensaje);
+      setMostrarMensaje(true);
+    };
+
+  const registrarProducto = async (nuevo) => {
+    try{
+      const res = await getAllProducts();
+      setProductos(res.data);
+      setMostrarModal(false);
+      mostrarToast("Producto registrado exitosamente")
+    } 
+    catch(error){
+      console.error("Error al eliminar producto: ", error);
+      mostrarToast("Error al eliminar producto");
+    };
   };
 
   return (
@@ -99,6 +117,14 @@ function Products() {
             onRegistrar={registrarProducto}
           />
         )}
+
+        {mostrarMensaje && (
+          <Toast
+            mensaje={mensajeToast}
+            onClose= {() => setMostrarMensaje(false)}
+          />
+        )
+        }
       </main>
     </div>
   );
