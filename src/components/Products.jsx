@@ -3,16 +3,17 @@ import { useNavigate } from "react-router-dom";
 import ModalProducts from "./ModalProducts";
 import logo from "../assets/logo.png";
 import "../styles/home.css";
-import "../styles/vistaGeneral.css";
+import medicamento from "../assets/medicamento.png";
 import SearchBar from "./SearchBar";
 
 function Products() {
   const navigate = useNavigate();
+
   const [busqueda, setBusqueda] = useState("");
   const [productos, setProductos] = useState([
-    { nombre: "Ibuprofeno", precio:  300.00000 },
-    { nombre: "Amoxicilina", precio: 20.000 },
-    { nombre: "Paracetamol", precio:50.000 },
+    { nombre: "Ibuprofeno", precio: 300000, imagen: medicamento },
+    { nombre: "Amoxicilina", precio: 20000 , imagen: medicamento },
+    { nombre: "Paracetamol", precio: 50000 , imagen: medicamento },
   ]);
   const [mostrarModal, setMostrarModal] = useState(false);
 
@@ -66,21 +67,32 @@ function Products() {
         <button onClick={() => goTo("/Productos")}>💊 PRODUCTOS</button>
         <button onClick={() => goTo("/proveedores")}>📦 PROVEEDORES</button>
         <button onClick={() => goTo("/ventaProducto")}>💰 VENTAS</button>
-        <button onClick={() => goTo("/inventario")}>📦 INVENTARIO</button>
+        <button onClick={() => goTo("/inventario")}>📋 INVENTARIO</button>
       </nav>
 
       <main className="home-main">
-        <div className="productos-container">
-          <h2>Lista de Productos</h2>
+        <div className="container">
+          <h2>Productos</h2>
           <div className="productos-grid">
-            {productos.map((prod, index) => (
-              <div key={index} className="producto-card">
-                <h3>{prod.nombre}</h3>
-                <p>${prod.precio.toFixed(2)}</p>
-              </div>
-            ))}
+            {productos
+              .filter((p) =>
+                p.nombre.toLowerCase().includes(busqueda.toLowerCase())
+              )
+              .map((p, i) => (
+                <div key={i} className="card-producto">
+  <img src={p.imagen} alt={p.nombre} className="card-img" />
+  <div className="card-info">
+    <h3>{p.nombre}</h3>
+    <p>Precio: ${p.precio.toLocaleString()}</p>
+  </div>
+</div>
+              ))}
           </div>
-          <button className="btn-registrar" onClick={() => setMostrarModal(true)}>
+
+          <button
+            className="btn-registrar"
+            onClick={() => setMostrarModal(true)}
+          >
             ➕ Registrar nuevo producto
           </button>
         </div>

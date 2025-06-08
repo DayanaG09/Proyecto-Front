@@ -15,15 +15,17 @@ function Home() {
     navigate("/login");
   };
 
-  const handleSearch = (e) => {
-    setBusqueda(e.target.busqueda.value);
-    
-    console.log("Buscando:", e.target.busqueda.value);
-  };
-
   const goTo = (ruta) => {
     navigate(ruta);
   };
+
+  const handleSearch = (e) => {
+  const valor = e.target.value;
+  setBusqueda(valor);
+  if (valor.length > 2) {
+    navigate(`/productos?buscar=${encodeURIComponent(valor)}`);
+  }
+};
 
   return (
     <div className="home-container">
