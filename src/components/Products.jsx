@@ -46,18 +46,23 @@ function Products() {
       setMostrarMensaje(true);
     };
 
-  const registrarProducto = async (nuevo) => {
-    try{
-      const res = await getAllProducts();
-      setProductos(res.data);
+const registrarProducto = () => {
+  getAllProducts()
+    .then((response) => {
+      setProductos(response.data);
       setMostrarModal(false);
-      mostrarToast("Producto registrado exitosamente")
-    } 
-    catch(error){
-      console.error("Error al eliminar producto: ", error);
-      mostrarToast("Error al eliminar producto");
-    };
-  };
+      mostrarToast("Producto registrado exitosamente");
+    })
+    .catch(() => {
+      mostrarToast("Error al recargar productos después del registro");
+    });
+};
+
+
+  const productosFiltrados = productos.filter((p) =>
+    p.name.toLowerCase().includes(busqueda.toLowerCase())
+  );
+  
 
   return (
     <div className="home-container">
@@ -99,12 +104,20 @@ function Products() {
         <div className="productos-container">
           <h2>Lista de Productos</h2>
           <div className="productos-grid">
-            {productos.map((prod, index) => (
-              <div key={index} className="producto-card">
-                <h3>{prod.name}</h3>
-                <p>${prod.price}</p>
-              </div>
-            ))}
+            {productosFiltrados.length===0 ? (
+              <p className="sin-resultados">No se encontraron productos</p>
+            ) : (
+              productosFiltrados.map((prod) => {
+
+                const indexOriginal = productos.findIndex(p => p.id === prod.id)
+
+                return (
+                  <div key={prod.id} className="producto-card">
+                    <h3>{prod.name}</h3>
+                    <p>${prod.price}</p>
+                  </div>
+                )}))}
+            
           </div>
           <button className="btn-registrar" onClick={() => setMostrarModal(true)}>
             ➕ Registrar nuevo producto

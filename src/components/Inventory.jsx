@@ -46,7 +46,7 @@ function Inventory() {
 
   // Modal Eliminar
   const [modalVisible, setModalVisible] = useState(false);
-  const [indexAEliminar, setIndexAEliminar] = useState(null);
+  const [idAEliminar, setIdAEliminar] = useState(null);
 
   // Modal Editar
   const [modalEditarVisible, setModalEditarVisible] = useState(false);
@@ -61,25 +61,26 @@ function Inventory() {
       setMostrarMensaje(true);
     };
 
-  const confirmarEliminar = () => {
-    if (indexAEliminar !== null) {
-      const producto = productos[indexAEliminar]
-      deleteProduct(producto.id)
+const confirmarEliminar = () => {
+  if (idAEliminar !== null) {
+    deleteProduct(idAEliminar)
       .then(() => {
-        const nuevosProductos = [...productos];
-        nuevosProductos.splice(indexAEliminar,1);
-        setProductos(nuevosProductos);
-        setIndexAEliminar(null);
-        setModalVisible(false);
+        return getAllProducts();
+      })
+      .then((response) => {
+        setProductos(response.data);
         mostrarToast("Producto eliminado exitosamente");
       })
-      .catch(error => {
-        console.error("Error al eliminar producto: ", error);
-        mostrarToast("Error al eliminar producto");
-      });
-      
-    }
-  };
+      .catch((error) => {
+        console.error("Error al eliminar producto:", error);
+        mostrarToast("Error al eliminar producto.");
+      })
+      .finally(() => {
+        setIdAEliminar(null);
+        setModalVisible(false);
+      })
+};
+};
 
   const guardarProductoEditado = (productoActualizado) => {
     updateProduct(productoActualizado.id, productoActualizado)
@@ -156,7 +157,7 @@ function Inventory() {
                 </button>
                 <button
                   onClick={() => {
-                    setIndexAEliminar(i);
+                    setIdAEliminar(p.id);
                     setModalVisible(true);
                   }}
                 >

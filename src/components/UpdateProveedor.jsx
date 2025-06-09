@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "../styles/modal.css";
 
-function UpdateLaboratory({ show, laboratorio, onSave, onCancel }) {
+function UpdateSupplier({ show, proveedor, onSave, onCancel }) {
   const [editado, setEditado] = useState({});
 
   useEffect(() => {
-    if (laboratorio) {
-      setEditado(laboratorio);
+    if (proveedor) {
+      setEditado(proveedor);
     }
-  }, [laboratorio]);
+  }, [proveedor]);
 
   if (!show) return null;
 
@@ -23,7 +23,8 @@ function UpdateLaboratory({ show, laboratorio, onSave, onCancel }) {
     if (
       editado.name?.trim() &&
       editado.address?.trim() &&
-      editado.phoneNumber?.trim()
+      editado.phoneNumber?.trim() &&
+      editado.email?.trim()
     ) {
       onSave(editado);
     } else {
@@ -34,7 +35,7 @@ function UpdateLaboratory({ show, laboratorio, onSave, onCancel }) {
   return (
     <div className="modal-overlay">
       <div className="modal-box">
-        <h2>Editar Laboratorio</h2>
+        <h2>Editar Proveedor</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -48,6 +49,13 @@ function UpdateLaboratory({ show, laboratorio, onSave, onCancel }) {
             name="address"
             placeholder="Dirección"
             value={editado.address || ""}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="email"
+            placeholder="Correo"
+            value={editado.email || ""}
             onChange={handleChange}
           />
           <input
@@ -71,4 +79,4 @@ function UpdateLaboratory({ show, laboratorio, onSave, onCancel }) {
   );
 }
 
-export default UpdateLaboratory;
+export default UpdateSupplier;
