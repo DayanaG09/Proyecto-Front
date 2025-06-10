@@ -1,17 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
-import "../styles/home.css";
-import "../styles/vistaGeneral.css";
+import ModalAgregarVenta from "./ModalAgregarVenta";
+import "../styles/Home.css";
 
 function VentaProducto() {
   const navigate = useNavigate();
-  const [busqueda, setBusqueda] = useState("");
-  const [productos, setProductos] = useState([{ nombre: "", cantidad: "" }]);
-
-  const handleSearch = (e) => {
-    setBusqueda(e.target.value);
-  };
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleLogout = () => {
     console.log("Sesión cerrada");
@@ -22,29 +17,7 @@ function VentaProducto() {
     navigate(ruta);
   };
 
-  const handleChange = (index, e) => {
-    const { name, value } = e.target;
-    const nuevosProductos = [...productos];
-    nuevosProductos[index][name] = value;
-    setProductos(nuevosProductos);
-  };
-
-  const agregarProducto = () => {
-    setProductos([...productos, { nombre: "", cantidad: "" }]);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    for (let producto of productos) {
-      if (!producto.nombre || !producto.cantidad) {
-        alert("Completa todos los campos antes de vender.");
-        return;
-      }
-    }
-    console.log("Venta registrada:", productos);
-    alert("Venta registrada exitosamente.");
-    setProductos([{ nombre: "", cantidad: "" }]);
-  };
+  const [ventas, setVentas] = useState([]);
 
   return (
     <div className="home-container">
@@ -60,15 +33,8 @@ function VentaProducto() {
           </h1>
         </div>
         <div className="right">
-          <input
-            type="text"
-            placeholder="Buscar..."
-            className="search"
-            value={busqueda}
-            onChange={handleSearch}
-          />
           <button className="logout" onClick={handleLogout}>
-            🔓 LOGOUT
+            🔓 Cerrar Sesion
           </button>
         </div>
       </header>
@@ -83,48 +49,41 @@ function VentaProducto() {
       </nav>
 
       <main className="home-main">
-        <div className="productos-container">
-          <h2>VENTA DE PRODUCTO</h2>
-          <form className="venta-form" onSubmit={handleSubmit}>
-            {productos.map((producto, index) => (
-              <div key={index} className="producto-card">
-                <input
-                  type="text"
-                  name="nombre"
-                  placeholder="NOMBRE PRODUCTO"
-                  value={producto.nombre}
-                  onChange={(e) => handleChange(index, e)}
-                  className="search-input"
-                />
-                <input
-                  type="number"
-                  name="cantidad"
-                  placeholder="CANTIDAD VENDIDA"
-                  value={producto.cantidad}
-                  onChange={(e) => handleChange(index, e)}
-                  className="search-input"
-                />
-              </div>
-            ))}
-            <div style={{ marginTop: "1rem" }}>
-              <button
-                type="button"
-                className="btn-registrar"
-                onClick={agregarProducto}
-                style={{ marginRight: "1rem" }}
-              >
-                ➕ AGREGAR OTRO PRODUCTO
-              </button>
-              <button type="submit" className="btn-registrar">
-                💰 VENDER
-              </button>
-            </div>
-          </form>
-        </div>
+          <button
+            className="home-button"
+            onClick={() => setModalVisible(true)}
+          >
+            ➕ AGREGAR VENTA
+          </button>
+        {ventas.length > 0 && (
+  <div className="ventas-card">
+    <h3>Ventas Realizadas</h3>
+    {ventas.map((venta, index) => (
+      <div key={index} className="venta">
+        <strong>Venta #{index + 1}</strong>
+        <ul>
+          {venta.map((producto, i) => (
+            <li key={i}>
+              {producto.nombre} - Cantidad: {producto.cantidad}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+)}
       </main>
+
+      {modalVisible && (
+  <ModalAgregarVenta
+    onClose={() => setModalVisible(false)}
+    setVentas={setVentas}
+  />
+)}
     </div>
   );
 }
 
 export default VentaProducto;
+
 

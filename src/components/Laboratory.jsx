@@ -83,7 +83,7 @@ function Laboratory() {
             value={busqueda}
             onChange={handleSearch}
           />
-          <button className="logout" onClick={handleLogout}>🔓 LOGOUT</button>
+          <button className="logout" onClick={handleLogout}>🔓 Cerrar Sesion</button>
         </div>
       </header>
 
@@ -97,7 +97,7 @@ function Laboratory() {
       </nav>
 
       <main className="home-main">
-        <div className="productos-container">
+        <div className>
           <h2>Lista de Laboratorios</h2>
           <div className="productos-grid">
             {laboratoriosFiltrados.map((lab, i) => (
@@ -106,10 +106,11 @@ function Laboratory() {
                 <p>Dirección: {lab.direccion}</p>
                 <p>Teléfono: {lab.telefono}</p>
                 <div className="acciones">
-                  <button onClick={() => {
+                  <button  onClick={() => {
                     setIndexAEditar(i);
                     setLabEditando(lab);
                     setModalEditarVisible(true);
+                    
                   }}>
                     ✏️
                   </button>

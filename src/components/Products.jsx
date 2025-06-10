@@ -56,7 +56,7 @@ function Products() {
             onChange={handleSearch}
           />
           <button className="logout" onClick={handleLogout}>
-            🔓 LOGOUT
+            🔓 Cerrar Sesion
           </button>
         </div>
       </header>

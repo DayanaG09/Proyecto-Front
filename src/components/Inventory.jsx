@@ -156,7 +156,7 @@ const imprimirInforme = (lista, titulo) => {
           />
             </div>
             <button className="logout" onClick={handleLogout}>
-            🔓 LOGOUT
+            🔓 Cerrar Sesion
           </button>
           </div>
         </div>
