@@ -41,6 +41,7 @@ function UpdateSupplier({ show, proveedor, onSave, onCancel }) {
     <div className="modal-overlay">
       <div className="modal-box">
         <h2>Editar Proveedor</h2>
+        <div className="modal-header">
         <input
           type="text"
           name="id"
@@ -48,6 +49,8 @@ function UpdateSupplier({ show, proveedor, onSave, onCancel }) {
           value={editado.id}
           onChange={handleChange}
         />
+        </div>
+        <div className="modal-header">
         <input
           type="text"
           name="nombre"
@@ -55,6 +58,8 @@ function UpdateSupplier({ show, proveedor, onSave, onCancel }) {
           value={editado.nombre}
           onChange={handleChange}
         />
+        </div>
+        <div className="modal-header">
         <input
           type="text"
           name="direccion"
@@ -62,6 +67,8 @@ function UpdateSupplier({ show, proveedor, onSave, onCancel }) {
           value={editado.direccion}
           onChange={handleChange}
         />
+        </div>
+        <div className="modal-header">
         <input
           type="text"
           name="telefono"
@@ -69,6 +76,7 @@ function UpdateSupplier({ show, proveedor, onSave, onCancel }) {
           value={editado.telefono}
           onChange={handleChange}
         />
+        </div>
         <input
           type="email"
           name="email"
@@ -76,6 +84,7 @@ function UpdateSupplier({ show, proveedor, onSave, onCancel }) {
           value={editado.email}
           onChange={handleChange}
         />
+        
         <div className="modal-actions">
           <button className="btn-confirm" onClick={handleSave}>
             Guardar

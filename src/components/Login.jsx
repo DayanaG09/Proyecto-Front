@@ -6,6 +6,7 @@ import logo from "../assets/logo.png";
 import ForgotPassword from "./ForgotPasswords";
 import ResetPassword from "./ResetPassword";
 
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -75,6 +76,7 @@ function Login() {
           <div className="links">
             <button type="button" onClick={() => setShowForgotModal(true)}>
               Olvidé mi contraseña
+
             </button>
           </div>
         </form>

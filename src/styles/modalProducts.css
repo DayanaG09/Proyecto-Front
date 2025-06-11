@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #fffffffd;
+  background-color: #f6f6f6fd;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,17 +12,19 @@
 }
 
 .modal {
-  background: #86acba;
+  background-color: #638692;
   padding: 2rem;
   border-radius: 12px;
   width: 400px;
   max-width: 90%;
   box-shadow: 0 0 15px rgba(7, 0, 0, 0.3);
+  color: #ffffff;
 }
 
 .modal .formulario input {
   display: block;
   font-size: 1rem;
+  font-weight: 400;
   background-color: #ffffff;
   color: #0e0d0d;
   width: 100%;

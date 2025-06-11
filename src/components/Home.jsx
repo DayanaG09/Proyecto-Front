@@ -1,27 +1,42 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import ModalStock from "..//components/ModalStock"; 
 import "../styles/Home.css";
 import logo from "../assets/logo.png";
-import farmacia from "../assets/Farmacia.jpg"; 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import HomeBanner from "./HomeBanner"; 
 
 function Home() {
   const navigate = useNavigate();
-  const [busqueda, setBusqueda] = useState("");
+  
+  const [isLowStockModalOpen, setIsLowStockModalOpen] = useState(false);
+  const [lowStockProducts, setLowStockProducts] = useState([]); // Usaremos esta lista para los children
+  const [allProducts, setAllProducts] = useState([]);
+
+  useEffect(() => {
+    setAllProducts([]); // Carga simulada de todos los productos
+  }, []);
 
   const handleLogout = () => {
-    
     console.log("Sesión cerrada");
     navigate("/login");
   };
 
-  const handleSearch = (e) => {
-    setBusqueda(e.target.busqueda.value);
-    
-    console.log("Buscando:", e.target.busqueda.value);
-  };
-
   const goTo = (ruta) => {
     navigate(ruta);
+  };
+
+  
+
+  const showLowStockProducts = () => {
+    const minStock = 10;
+    const filtered = allProducts.filter(product => product.stock <= minStock);
+    setLowStockProducts(filtered); 
+    setIsLowStockModalOpen(true);
+  };
+
+  const closeLowStockModal = () => {
+    setIsLowStockModalOpen(false);
+    setLowStockProducts([]); 
   };
 
   return (
@@ -38,15 +53,12 @@ function Home() {
           </h1>
         </div>
         <div className="right">
-          <input
-            type="text"
-            placeholder="Buscar..."
-            className="search"
-            value={busqueda}
-            onChange={handleSearch}
-          />
+          
+          <button className="low-stock-button" onClick={showLowStockProducts}>
+            ⚠️ Stock Bajo
+          </button>
           <button className="logout" onClick={handleLogout}>
-            🔓 LOGOUT
+            🔓 Cerrar Sesion
           </button>
         </div>
       </header>
@@ -61,8 +73,28 @@ function Home() {
       </nav>
 
       <main className="home-main">
-        <img src={farmacia} alt="Farmacia" className="main-image" />
+        <HomeBanner />
       </main>
+
+     
+      <ModalStock
+        isOpen={isLowStockModalOpen}
+        onClose={closeLowStockModal}
+        title="Productos Próximos a Agotarse"
+      >
+        
+        {lowStockProducts.length > 0 ? (
+          <ul className="low-stock-list">
+            {lowStockProducts.map(product => (
+              <li key={product.id}>
+                **{product.name}**: {product.stock} unidades
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No hay productos próximos a agotarse. ¡El inventario está en buen estado!</p>
+        )}
+      </ModalStock>
     </div>
   );
 }

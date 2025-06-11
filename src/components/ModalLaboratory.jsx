@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/modal.css"; // Crea este si no existe
+import "../styles/modal.css"; 
 import { createLaboratory } from "../services/laboratoryService";
 
 function ModalLaboratory({ onClose, onRegistrar }) {
@@ -27,7 +27,9 @@ function ModalLaboratory({ onClose, onRegistrar }) {
     <div className="modal-overlay">
       <div className="modal-content">
         <h3>Registrar Laboratorio</h3>
+
         <form onSubmit={handleSubmit} className="formulario">
+
           <label>Nombre</label>
           <input type="text" name="name" value={laboratorio.name || ""} onChange={handleChange} required />
 

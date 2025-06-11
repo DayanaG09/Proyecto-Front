@@ -72,6 +72,7 @@ function VentaProducto() {
     });
   };
 
+
   const confirmarEliminar = () => {
     if (idAEliminar !== null) {
       deleteSale(idAEliminar)
@@ -209,8 +210,17 @@ function VentaProducto() {
       )}
 
       </main>
+
+      {modalVisible && (
+  <ModalAgregarVenta
+    onClose={() => setModalVisible(false)}
+    setVentas={setVentas}
+  />
+)}
     </div>
   );
 }
 
+
 export default VentaProducto;
+

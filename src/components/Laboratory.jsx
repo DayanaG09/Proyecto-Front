@@ -124,7 +124,7 @@ const registrarLaboratorio = () => {
             value={busqueda}
             onChange={handleSearch}
           />
-          <button className="logout" onClick={handleLogout}>🔓 LOGOUT</button>
+          <button className="logout" onClick={handleLogout}>🔓 Cerrar Sesion</button>
         </div>
       </header>
 
@@ -138,7 +138,7 @@ const registrarLaboratorio = () => {
       </nav>
 
       <main className="home-main">
-        <div className="productos-container">
+        <div >
           <h2>Lista de Laboratorios</h2>
           <div className="productos-grid">
             {laboratoriosFiltrados.length === 0 ? (

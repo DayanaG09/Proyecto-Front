@@ -53,6 +53,7 @@ function UpdateProduct({ show, producto, onSave, onCancel, laboratorios }) {
             placeholder="Precio"
           />
           <label className="checkbox-label">
+
             <span>Fecha ingreso</span>
           </label>
           <input
@@ -75,7 +76,9 @@ function UpdateProduct({ show, producto, onSave, onCancel, laboratorios }) {
             placeholder="Lote"
           />
           <label className="checkbox-label">
+
             <span>Fecha vencimiento</span>
+
           </label>
           <input
             type="date"
