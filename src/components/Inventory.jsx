@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../styles/inventory.css";
 import logo from "../assets/logo.png";
-import { inventarioInicial } from "./InventoryLogic";
 import ModalConfirmation from "./ModalConfirmation";
 import UpdateProduct from "./UpdateProduct";
 import  { useNavigate } from "react-router-dom";
@@ -11,7 +10,7 @@ import SearchBar from "./SearchBar";
 
 function Inventory() {
     const navigate = useNavigate();
-  const [productos, setProductos] = useState(inventarioInicial);
+  const [productos, setProductos] = useState([]);
 
   const [busqueda, setBusqueda] = useState("");
 

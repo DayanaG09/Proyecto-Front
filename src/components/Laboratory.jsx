@@ -97,11 +97,11 @@ function Laboratory() {
       </nav>
 
       <main className="home-main">
-        <div className>
+        <div >
           <h2>Lista de Laboratorios</h2>
           <div className="productos-grid">
             {laboratoriosFiltrados.map((lab, i) => (
-              <div key={i} className="producto-card">
+              <div key={i} >
                 <h3>{lab.nombre}</h3>
                 <p>Dirección: {lab.direccion}</p>
                 <p>Teléfono: {lab.telefono}</p>

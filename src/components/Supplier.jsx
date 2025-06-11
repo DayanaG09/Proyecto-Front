@@ -5,13 +5,12 @@ import logo from "../assets/logo.png";
 import "../styles/home.css"; 
 import UpdateSupplier from "./UpdateSupplier";
 import ModalConfirmation from "./ModalConfirmation";
-import "../styles/vistaGeneral.css";
 
 function Supplier() {
   const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState("");
   const [Proveedores, setProveedores] = useState([
-    { id: "LAB001", nombre: "Genfar", direccion: "Calle 123", telefono: "3214567890", email: "dayaya@gmail.com"},
+    { id: "LAB001", nombre: "Proveedor1", direccion: "Calle 123", telefono: "3214567890", email: "dayaya@gmail.com"},
   ]);
   const [mostrarModal, setMostrarModal] = useState(false);
 
@@ -61,6 +60,10 @@ function Supplier() {
     setProEditando(null);
     setIndexAEditar(null);
   };
+
+    const ProveedoresFiltrados = Proveedores.filter((l) =>
+    l.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  );
   return (
     <div className="home-container">
       <header className="home-header">
@@ -98,11 +101,11 @@ function Supplier() {
       </nav>
 
       <main className="home-main">
-        <div className="productos-container">
-          <h2>Lista de Proveedores</h2>
+        <div>
+          <h2>Agenda de Proveedores</h2>
           <div className="productos-grid">
-            {Proveedores.map((pro, index) => (
-              <div key={index} className="producto-card">
+            {ProveedoresFiltrados.map((pro, index) => (
+              <div key={index} >
                 <h3>{pro.nombre}</h3>
                 <p>Dirección: {pro.direccion}</p>
                 <p>Teléfono: {pro.telefono}</p>

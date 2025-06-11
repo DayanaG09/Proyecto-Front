@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/forgotPassword.css"; // Para los estilos del modal";
+import "../styles/forgotPassword.css"; 
 
 function ForgotPassword({ show, handleClose }) {
   const [emailOrDoc, setEmailOrDoc] = useState("");
