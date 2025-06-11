@@ -1,10 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { loginUser } from "../services/authService";
 import "../styles/login.css";
 import logo from "../assets/logo.png";
-import ForgotPassword from "../components/ForgotPasswords.jsx";
+import ForgotPassword from "./ForgotPasswords";
+import ResetPassword from "./ResetPassword";
+
 
 function Login() {
-  const [showForgot, setShowForgot] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showForgotModal, setShowForgotModal] = useState(false);
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [resetToken, setResetToken] = useState(null);
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = searchParams.get("token");
+    if (token) {
+      setResetToken(token);
+      setShowResetModal(true);
+    }
+  }, [searchParams]);
+  
+  const goTo = (ruta) => {
+    navigate(ruta);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await loginUser({ email, password });
+      console.log("Usuario autenticado:", response.data);
+      // Guarda al usuario en localStorage si deseas mantener sesión
+      localStorage.setItem("user", JSON.stringify(response.data));
+      goTo("/home")
+    } catch (error) {
+      console.error("Login fallido:", error);
+      alert("Correo o contraseña incorrectos");
+    }
+  };
 
   return (
     <div className="login-container">
@@ -18,41 +54,46 @@ function Login() {
       </div>
 
       <div className="login-right">
-        <div className="emoji">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="200"
-            height="200"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="none"
-              stroke="#fff"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1.5"
-              d="M4 22v-1c0-1.87 0-2.804.402-3.5A3 3 0 0 1 5.5 16.402C6.196 16 7.13 16 9 16l3 4l3-4c1.87 0 2.804 0 3.5.402a3 3 0 0 1 1.098 1.098C20 18.196 20 19.13 20 21v1M15.937 8l1.018-4.136C17.188 2.917 16.483 2 15.523 2H8.477c-.96 0-1.665.917-1.432 1.864L8.063 8m7.874 0v2c0 2.209-1.762 4-3.937 4s-3.937-1.791-3.937-4V8m7.874 0H8.063M12 4v2m1-1h-2"
-              color="#fff"
-            />
-          </svg>
-        </div>
-        <form className="login-form">
-          <input type="text" placeholder="USERNAME" />
-          <input type="password" placeholder="PASSWORD" />
+        <div className="emoji">{/* Icono omitido por brevedad */}</div>
+        <form className="login-form" onSubmit={handleLogin}>
+          <input
+            type="text"
+            placeholder="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
           <button type="submit" className="login-btn">
             LOGIN
           </button>
           <div className="links">
-            <button type="button" onClick={() => setShowForgot(true)}>
-              olvidé mi contraseña
+            <button type="button" onClick={() => setShowForgotModal(true)}>
+              Olvidé mi contraseña
+
             </button>
           </div>
         </form>
       </div>
 
       <ForgotPassword
-        show={showForgot}
-        handleClose={() => setShowForgot(false)}
+        show={showForgotModal}
+        handleClose={() => setShowForgotModal(false)}
+      />
+
+      <ResetPassword
+        show={showResetModal}
+        token={resetToken}
+        handleClose={() => {
+          setShowResetModal(false);
+          setResetToken(null);
+        }}
       />
     </div>
   );

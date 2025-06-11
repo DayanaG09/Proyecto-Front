@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import "../styles/modal.css";
+import { createSupplier } from "../services/supplierService";
 function ModalSupplier({ onClose, onRegistrar }) {
-  const [form, setForm] = useState({
-    id: "",
-    nombre: "",
-    direccion: "",
-    telefono: "",
-    email: "",
-  });
+  const [proveedor, setProveedor] = useState({});
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const {name , value } = e.target;
+    setProveedor({
+      ...proveedor,
+      [name] : value,
+    })
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onRegistrar(form);
-    onClose();
+  const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await createSupplier(proveedor);
+        onRegistrar(response.data);
+      } catch (error) {
+        console.error("Error al crear proveedor:", error);
+  }
   };
 
   return (
@@ -24,18 +27,19 @@ function ModalSupplier({ onClose, onRegistrar }) {
       <div className="modal-content">
         <h3>Registrar Proveedor</h3>
         <form onSubmit={handleSubmit} className="formulario">
-         
+
           <label>Nombre</label>
-          <input type="text" name="nombre" onChange={handleChange} className="modal-inputs"  required />
+          <input type="text" name="name" value={proveedor.name || ""} onChange={handleChange} required />
 
           <label>Dirección</label>
-          <input type="text" name="direccion" onChange={handleChange} className="modal-inputs" required />
+          <input type="text" name="address" value={proveedor.address || ""} onChange={handleChange} required />
+
+          <label>Email</label>
+          <input type="email" name="email" value={proveedor.email || ""} onChange={handleChange} required />
 
           <label>Teléfono</label>
-          <input type="tel" name="telefono" onChange={handleChange} className="modal-inputs" required />
-          
-          <label>Email</label>
-          <input type="email" name="email" onChange={handleChange}className="modal-inputs" required />
+          <input type="tel" name="phoneNumber" value={proveedor.phoneNumber || ""} onChange={handleChange} required />
+
 
           <div className="modal-buttons">
             <button type="submit" className="btn-registrar">Registrar</button>

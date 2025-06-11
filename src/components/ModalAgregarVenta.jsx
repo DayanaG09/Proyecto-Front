@@ -1,20 +1,25 @@
-import React, { useState } from "react";
-import "../styles/modal.css"; // Asegúrate de tener este CSS creado
+import React, { useEffect, useState } from "react";
+import "../styles/modal.css"; // crea o adapta este CSS
+import { createSale, getAllSales } from "../services/saleService";
+import { getAllProducts } from "../services/productService";
 
-// Productos de prueba
-const MOCK_PRODUCTOS = [
-  { id: 1, nombre: "Paracetamol" },
-  { id: 2, nombre: "Ibuprofeno" },
-  { id: 3, nombre: "Amoxicilina" },
-];
-
-function ModalAgregarVenta({ onClose, setVentas }) {
+function ModalAgregarVenta( { onClose, onRegistrar } ) {
   const [busqueda, setBusqueda] = useState("");
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
 
-  const productosFiltrados = MOCK_PRODUCTOS.filter((p) =>
-    p.nombre.toLowerCase().includes(busqueda.toLowerCase())
-  );
+
+const [productos, setProductos] = useState([]);
+
+useEffect(() => {
+  getAllProducts()
+    .then((res) => setProductos(res.data))
+    .catch((err) => console.error("Error al cargar productos", err));
+}, []);
+
+  const productosFiltrados = productos.filter((p) =>
+    p.name.toLowerCase().includes(busqueda.toLowerCase())
+    );
+
 
   const agregarProducto = (producto) => {
     if (!productosSeleccionados.find((p) => p.id === producto.id)) {
@@ -27,34 +32,49 @@ function ModalAgregarVenta({ onClose, setVentas }) {
 
   const handleCantidadChange = (id, cantidad) => {
     setProductosSeleccionados((prev) =>
-      prev.map((p) =>
-        p.id === id ? { ...p, cantidad } : p
-      )
+      prev.map((p) => (p.id === id ? { ...p, cantidad } : p))
     );
   };
 
-  const registrarVenta = () => {
-    // Validar que todas las cantidades estén completas y sean válidas
-    const ventaValida = productosSeleccionados.every(
-      (p) => p.cantidad !== "" && !isNaN(p.cantidad) && Number(p.cantidad) > 0
-    );
+const registrarVenta = () => {
+  if (
+    productosSeleccionados.some(
+      (p) => p.cantidad === "" 
+      || isNaN(p.cantidad) 
+      || p.cantidad <= 0 
+      ||parseInt(p.cantidad) > p.stock
+    )
+  ) {
+    alert("Completa correctamente todas las cantidades.");
+    return;
+  }
 
-    if (!ventaValida) {
-      alert("Completa correctamente todas las cantidades.");
-      return;
-    }
-
-    // Convertir cantidades a número
-    const ventaFormateada = productosSeleccionados.map((p) => ({
-      ...p,
-      cantidad: parseInt(p.cantidad),
-    }));
-
-    // Guardar la venta
-    setVentas((prev) => [...prev, ventaFormateada]);
-    alert("Venta registrada exitosamente.");
-    onClose();
+  const payload = {
+    saleDate: new Date().toISOString(), // Fecha actual
+    detalles: productosSeleccionados.map((p) => ({
+      productId: p.id,
+      quantity: parseInt(p.cantidad),
+    })),
   };
+
+  console.log("Payload enviado:", JSON.stringify(payload, null, 2));
+
+  createSale(payload)
+    .then(() => {
+      return getAllSales(); // Recarga las ventas
+    })
+    .then((response) => {
+      onRegistrar(response.data); // Actualiza la lista de ventas
+      console.log("Venta registrada exitosamente.");
+      onClose(); // Cierra el modal
+    })
+    .catch((error) => {
+      console.error("Error al registrar la venta:", error);
+      alert("Error al registrar la venta.");
+    });
+};
+
+
 
   return (
     <div className="modal-overlay">
@@ -76,20 +96,19 @@ function ModalAgregarVenta({ onClose, setVentas }) {
               className="producto-item"
               onClick={() => agregarProducto(producto)}
             >
-              {producto.nombre}
+
+              {producto.name}
+
             </div>
           ))}
         </div>
 
         <h4>Productos Seleccionados</h4>
-        {productosSeleccionados.length === 0 && (
-          <p style={{ fontStyle: "italic", color: "gray" }}>
-            No has seleccionado productos.
-          </p>
-        )}
+
         {productosSeleccionados.map((producto) => (
           <div key={producto.id} className="producto-seleccionado">
-            <span>{producto.nombre}</span>
+            <span>{producto.name}</span>
+
             <input
               type="number"
               placeholder="Cantidad"
@@ -98,7 +117,7 @@ function ModalAgregarVenta({ onClose, setVentas }) {
                 handleCantidadChange(producto.id, e.target.value)
               }
               className="cantidad-input"
-              min="1"
+
             />
           </div>
         ))}

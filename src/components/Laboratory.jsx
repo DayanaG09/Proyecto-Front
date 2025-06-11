@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ModalLaboratory from "./ModalLaboratory";
 import ModalConfirmation from "./ModalConfirmation";
@@ -6,21 +6,32 @@ import UpdateLaboratory from "./UpdateLaboratory"; // Asegúrate de tenerlo
 import logo from "../assets/logo.png";
 import "../styles/home.css";
 import "../styles/vistaGeneral.css";
+import { deleteLaboratory, getAllLaboratory, updateLaboratory } from "../services/laboratoryService";
+import Toast from "./Toast";
 
 function Laboratory() {
   const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState("");
-  const [laboratorios, setLaboratorios] = useState([
-    { id: "LAB001", nombre: "Genfar", direccion: "Calle 123", telefono: "3214567890" },
-  ]);
+  const [laboratorios, setLaboratorios] = useState([]);
 
-  const [mostrarModal, setMostrarModal] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [indexAEliminar, setIndexAEliminar] = useState(null);
+  useEffect(() => {
+    getAllLaboratory()
+    .then((response) => {
+      setLaboratorios(response.data);
+    })
+    .catch((error) => {
+      console.log("Error al cargar laboratorios: ",error);
+    })
+  }, [])
+  
+
+  const [modalRegistrarVisible, setModalRegistrarVisible] = useState(false);
+  const [modalEliminarVisible, setModalEliminarVisible] = useState(false);
+  const [indexAEditar, setIndexAEditar] = useState(null);
 
   const [modalEditarVisible, setModalEditarVisible] = useState(false);
   const [labEditando, setLabEditando] = useState(null);
-  const [indexAEditar, setIndexAEditar] = useState(null);
+  const [idAEliminar, setIdAEliminar] = useState(null);
 
   const handleLogout = () => {
     console.log("Sesión cerrada");
@@ -31,39 +42,69 @@ function Laboratory() {
     setBusqueda(e.target.value);
   };
 
-  const eliminarLaboratorio = (index) => {
-    const nuevos = [...laboratorios];
-    nuevos.splice(index, 1);
-    setLaboratorios(nuevos);
-  };
+  const [mensajeToast, setMensajeToast] = useState("");
+  const [mostrarMensaje, setMostrarMensaje] = useState(false);
 
-  const confirmar = () => {
-    if (indexAEliminar !== null) {
-      eliminarLaboratorio(indexAEliminar);
-      setIndexAEliminar(null);
-      setModalVisible(false);
-    }
-  };
+  const mostrarToast = (mensaje) => {
+      setMensajeToast(mensaje);
+      setMostrarMensaje(true);
+    };
+
+const confirmarEliminar = () => {
+  if (idAEliminar !== null) {
+    deleteLaboratory(idAEliminar)
+      .then(() => {
+        return getAllLaboratory(); // recargar laboratorios
+      })
+      .then((response) => {
+        setLaboratorios(response.data);
+        mostrarToast("Laboratorio eliminado exitosamente");
+      })
+      .catch((error) => {
+        console.error("Error al eliminar laboratorio:", error);
+        mostrarToast("Error al eliminar laboratorio.");
+      })
+      .finally(() => {
+        setIdAEliminar(null);
+        setModalEliminarVisible(false);
+      });
+  }
+};
+
+
 
   const guardarLaboratorioEditado = (actualizado) => {
-    const nuevos = [...laboratorios];
-    nuevos[indexAEditar] = actualizado;
-    setLaboratorios(nuevos);
-    setModalEditarVisible(false);
-    setLabEditando(null);
-    setIndexAEditar(null);
+    updateLaboratory(actualizado.id, actualizado)
+    .then(() => {
+      const nuevos = [...laboratorios];
+      nuevos[indexAEditar] = actualizado;
+      setLaboratorios(nuevos);
+      setModalEditarVisible(false);
+      setLabEditando(null);
+      setIdAEliminar(null);
+      mostrarToast("Laboratorio editado exitosamente!")
+    })
   };
 
   const goTo = (ruta) => {
     navigate(ruta);
   };
 
-  const registrarLaboratorio = (nuevo) => {
-    setLaboratorios([...laboratorios, nuevo]);
-  };
+const registrarLaboratorio = () => {
+  getAllLaboratory()
+    .then((response) => {
+      setLaboratorios(response.data);
+      setModalRegistrarVisible(false);
+      mostrarToast("Laboratorio registrado exitosamente");
+    })
+    .catch(() => {
+      mostrarToast("Error al recargar laboratorios después del registro");
+    });
+};
+
 
   const laboratoriosFiltrados = laboratorios.filter((l) =>
-    l.nombre.toLowerCase().includes(busqueda.toLowerCase())
+    l.name.toLowerCase().includes(busqueda.toLowerCase())
   );
 
   return (
@@ -100,47 +141,53 @@ function Laboratory() {
         <div >
           <h2>Lista de Laboratorios</h2>
           <div className="productos-grid">
-            {laboratoriosFiltrados.map((lab, i) => (
-              <div key={i} >
-                <h3>{lab.nombre}</h3>
-                <p>Dirección: {lab.direccion}</p>
-                <p>Teléfono: {lab.telefono}</p>
-                <div className="acciones">
-                  <button  onClick={() => {
-                    setIndexAEditar(i);
-                    setLabEditando(lab);
-                    setModalEditarVisible(true);
-                    
-                  }}>
-                    ✏️
-                  </button>
-                  <button onClick={() => {
-                    setIndexAEliminar(i);
-                    setModalVisible(true);
-                  }}>
-                    🗑️
-                  </button>
+            {laboratoriosFiltrados.length === 0 ? (
+                  <p className="sin-resultados">No se encontraron laboratorios.</p>
+              ) : (
+              laboratoriosFiltrados.map((lab) => {
+              
+              const indexOriginal = laboratorios.findIndex(l => l.id === lab.id);
+
+              return (
+                <div key={lab.id} className="producto-card">
+                  <h3>{lab.name}</h3>
+                  <p>Dirección: {lab.address}</p>
+                  <p>Teléfono: {lab.phoneNumber}</p>
+                  <div className="acciones">
+                    <button onClick={() => {
+                      setIndexAEditar(indexOriginal);
+                      setLabEditando(lab);
+                      setModalEditarVisible(true);
+                    }}>
+                      ✏️
+                    </button>
+                    <button onClick={() => {
+                      setIdAEliminar(lab.id);
+                      setModalEliminarVisible(true);
+                    }}>
+                      🗑️
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+                )}))};
           </div>
-          <button className="btn-registrar" onClick={() => setMostrarModal(true)}>
+          <button className="btn-registrar" onClick={() => setModalRegistrarVisible(true)}>
             ➕ Registrar nuevo laboratorio
           </button>
         </div>
 
-        {mostrarModal && (
+        {modalRegistrarVisible && (
           <ModalLaboratory
-            onClose={() => setMostrarModal(false)}
+            onClose={() => setModalRegistrarVisible(false)}
             onRegistrar={registrarLaboratorio}
           />
         )}
 
         <ModalConfirmation
-          show={modalVisible}
+          show={modalEliminarVisible}
           message="¿Estás seguro de que deseas eliminar este laboratorio?"
-          onConfirm={confirmar}
-          onCancel={() => setModalVisible(false)}
+          onConfirm={confirmarEliminar}
+          onCancel={() => setModalEliminarVisible(false)}
         />
 
         <UpdateLaboratory
@@ -149,6 +196,13 @@ function Laboratory() {
           onSave={guardarLaboratorioEditado}
           onCancel={() => setModalEditarVisible(false)}
         />
+
+        {mostrarMensaje && (
+          <Toast
+            mensaje={mensajeToast}
+            onClose={() => setMostrarMensaje(false)}
+          />
+        )}
       </main>
     </div>
   );
