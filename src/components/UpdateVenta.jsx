@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import "../styles/modalUpdate.css";
 
 function UpdateVenta({ show, venta, onSave, onCancel }) {
-  const [formData, setFormData] = useState({ ...venta });
+  const [formData, setFormData] = useState({
+    ...venta,
+    detalles: venta?.detalles || []
+  });
 
   useEffect(() => {
     if (venta) {
-      setFormData({ ...venta });
+      setFormData({
+        ...venta,
+        detalles: venta.detalles || []
+      });
     }
   }, [venta]);
 
@@ -24,7 +31,7 @@ function UpdateVenta({ show, venta, onSave, onCancel }) {
   return (
     <div className="modal">
       <div className="modal-content">
-        <h2>Editar Venta #{venta.id}</h2>
+        <h2>Editar Venta {venta.id}</h2>
         <ul>
           {formData.detalles.map((detalle, index) => (
             <li key={detalle.productId}>
