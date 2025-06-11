@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ModalProducts from "./ModalProducts";
 import logo from "../assets/logo.png";
 import "../styles/home.css";
 import "../styles/vistaGeneral.css";
 import SearchBar from "./SearchBar";
+import { getAllProducts } from "../services/productService";
+import Toast from "./Toast";
 
 function Products() {
   const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState("");
-  const [productos, setProductos] = useState([
-    { nombre: "Ibuprofeno", precio:  300.00000 },
-    { nombre: "Amoxicilina", precio: 20.000 },
-    { nombre: "Paracetamol", precio:50.000 },
-  ]);
+  const [productos, setProductos] = useState([]);
+
   const [mostrarModal, setMostrarModal] = useState(false);
+
+  useEffect(() => {
+  getAllProducts()
+    .then((response) => {
+      setProductos(response.data);
+    })
+    .catch((error) => {
+      console.error("Error al cargar productos", error);
+    });
+}, []);
+  
 
   const handleLogout = () => {
     console.log("Sesión cerrada");
@@ -29,9 +39,31 @@ function Products() {
     navigate(ruta);
   };
 
-  const registrarProducto = (nuevo) => {
-    setProductos([...productos, nuevo]);
-  };
+  const [mensajeToast, setMensajeToast] = useState("");
+  const [mostrarMensaje, setMostrarMensaje] = useState(false);
+
+  const mostrarToast = (mensaje) => {
+      setMensajeToast(mensaje);
+      setMostrarMensaje(true);
+    };
+
+const registrarProducto = () => {
+  getAllProducts()
+    .then((response) => {
+      setProductos(response.data);
+      setMostrarModal(false);
+      mostrarToast("Producto registrado exitosamente");
+    })
+    .catch(() => {
+      mostrarToast("Error al recargar productos después del registro");
+    });
+};
+
+
+  const productosFiltrados = productos.filter((p) =>
+    p.name.toLowerCase().includes(busqueda.toLowerCase())
+  );
+  
 
   return (
     <div className="home-container">
@@ -73,12 +105,21 @@ function Products() {
         <div className="productos-container">
           <h2>Lista de Productos</h2>
           <div className="productos-grid">
-            {productos.map((prod, index) => (
-              <div key={index} className="producto-card">
-                <h3>{prod.nombre}</h3>
-                <p>${prod.precio.toFixed(2)}</p>
-              </div>
-            ))}
+            {productosFiltrados.length===0 ? (
+              <p className="sin-resultados">No se encontraron productos</p>
+            ) : (
+              productosFiltrados.map((prod) => {
+
+                const indexOriginal = productos.findIndex(p => p.id === prod.id)
+
+                return (
+                  <div key={prod.id} className="producto-card">
+                    <h3>{prod.name}</h3>
+                    <p>${prod.price}</p>
+                  </div>
+                )}))}
+            
+
           </div>
           <button className="btn-registrar" onClick={() => setMostrarModal(true)}>
             ➕ Registrar nuevo producto
@@ -91,6 +132,14 @@ function Products() {
             onRegistrar={registrarProducto}
           />
         )}
+
+        {mostrarMensaje && (
+          <Toast
+            mensaje={mensajeToast}
+            onClose= {() => setMostrarMensaje(false)}
+          />
+        )
+        }
       </main>
     </div>
   );
