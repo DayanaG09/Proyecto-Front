@@ -12,6 +12,7 @@ function Products() {
   const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState("");
   const [productos, setProductos] = useState([]);
+
   const [mostrarModal, setMostrarModal] = useState(false);
 
   useEffect(() => {
@@ -118,6 +119,7 @@ const registrarProducto = () => {
                   </div>
                 )}))}
             
+
           </div>
           <button className="btn-registrar" onClick={() => setMostrarModal(true)}>
             ➕ Registrar nuevo producto

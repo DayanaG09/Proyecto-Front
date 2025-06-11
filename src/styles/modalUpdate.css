@@ -5,13 +5,19 @@
   background: rgba(0, 0, 0, 0.5);
   display: flex; justify-content: center; align-items: center;
   z-index: 1000;
+  background-color: #86acba63 ;
 }
 
 .modal-box {
-  background: white;
-  padding: 2rem;
+  background: #86acba;
+  padding: 3%;
   border-radius: 10px;
-  width: 90%;
+  width: 20%;
+  height: auto;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  color: #ffffff;
   max-width: 450px;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
@@ -20,6 +26,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  font-size: 1rem;
+  color: white;
 }
 
 .form-editar input {
@@ -37,14 +45,16 @@
 .btn-confirm {
   background-color: #4caf50;
   color: white;
-  padding: 0.6rem 1rem;
+  padding: 1rem 1rem;
+  margin-bottom: auto;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+
 }
 
 .btn-cancel {
-  background-color: #f44336;
+  background-color: #f43636;
   color: white;
   padding: 0.6rem 1rem;
   border: none;

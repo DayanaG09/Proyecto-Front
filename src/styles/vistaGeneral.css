@@ -1,18 +1,19 @@
 .productos-container {
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
+  
 }
 
 .productos-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 3rem;
+  margin-bottom: 1rem;
 }
 
 .producto-card {
-  background: #f0f0f0;
+  background: #86acba;
   padding: 1rem;
   border-radius: 10px;
   width: 200px;
@@ -21,8 +22,8 @@
 
 .btn-registrar {
   padding: 0.7rem 1.2rem;
-  background-color: #1d72b8;
-  color: white;
+  background-color: #fbfdff;
+  color: rgb(14, 12, 12);
   border: none;
   border-radius: 8px;
   cursor: pointer;

@@ -6,6 +6,7 @@ import { getAllSupplier } from "../services/supplierService";
 import { createProduct } from "../services/productService";
 
 function ModalProducts({ onClose, onRegistrar }) {
+
   const [producto, setProducto] = useState({});
   const [laboratorios, setlaboratorios] = useState([]);
   const [proveedores, setProveedores] = useState([]);
@@ -30,11 +31,13 @@ function ModalProducts({ onClose, onRegistrar }) {
     }))
   }
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await createProduct(producto);
     onRegistrar(response.data);
   }
+
 
   return (
     <div className="modal-overlay">
