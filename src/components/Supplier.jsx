@@ -23,14 +23,6 @@ function Supplier() {
     });
   }, []);
 
-
-   const [modalEditarVisible, setModalEditarVisible] = useState(false);
-    const [proEditando, setProEditando] = useState(null);
-    const [indexAEditar, setIndexAEditar] = useState(null);
-
-      const [modalVisible, setModalVisible] = useState(false);
-      const [indexAEliminar, setIndexAEliminar] = useState(null);
-
   const handleLogout = () => {
     console.log("Sesión cerrada");
     navigate("/login");
