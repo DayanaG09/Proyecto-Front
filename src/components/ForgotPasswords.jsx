@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import "../styles/forgotPassword.css"; // Para los estilos del modal";
+import { requestPasswordReset } from "../services/passwordService";
 
 function ForgotPassword({ show, handleClose }) {
-  const [emailOrDoc, setEmailOrDoc] = useState("");
+  const [email, setEmail] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Recuperación para:", emailOrDoc);
-    alert("Si los datos existen, se enviará un correo o mensaje.");
-    handleClose();
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    await requestPasswordReset(email);
+    alert("Si los datos existen, se enviará un correo con instrucciones.");
+  } catch (error) {
+    console.error("Error al enviar solicitud:", error);
+    alert("Hubo un error. Intenta nuevamente.");
+  }
+
+  handleClose();
+};
 
   if (!show) return null;
 
@@ -27,10 +35,10 @@ function ForgotPassword({ show, handleClose }) {
         </p>
         <form onSubmit={handleSubmit} className="form">
           <input
-            type="text"
-            placeholder="Correo o N° Documento"
-            value={emailOrDoc}
-            onChange={(e) => setEmailOrDoc(e.target.value)}
+            type="email"
+            placeholder="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <button type="submit" className="submit-btn">
