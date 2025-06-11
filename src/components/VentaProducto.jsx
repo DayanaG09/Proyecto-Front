@@ -58,7 +58,18 @@ function VentaProducto() {
   };
 
   const guardarVentasEditado = (actualizado) => {
-    updateSale(actualizado.id, actualizado).then(() => {
+    // ✅ Limpiar los detalles: solo enviar productId y quantity
+    const ventaLimpia = {
+      id: actualizado.id,
+      saleDate: actualizado.saleDate,
+      detalles: actualizado.detalles.map((d) => ({
+        productId: d.productId,
+        quantity: d.quantity,
+      })),
+    };
+
+    console.log("📦 Enviando venta actualizada:", JSON.stringify(ventaLimpia, null, 2)); // 👈 Aquí lo ves bonito en consola
+    updateSale(actualizado.id, ventaLimpia).then(() => {
       const nuevos = [...ventas];
       const idx = nuevos.findIndex((v) => v.id === actualizado.id);
       if (idx !== -1) {
@@ -72,12 +83,11 @@ function VentaProducto() {
     });
   };
 
-
   const confirmarEliminar = () => {
     if (idAEliminar !== null) {
       deleteSale(idAEliminar)
       .then(() => {
-        return getAllSales();
+        return getSalesWithDetails();
       })
       .then((response) => {
         setVentas(response.data);
@@ -191,16 +201,16 @@ function VentaProducto() {
       <ModalConfirmation
         show={modalEliminarVisible}
         message = "Estás seguro que seas eliminar esta venta?"
-        onSave = {confirmarEliminar}
+        onConfirm = {confirmarEliminar}
         onCancel={() => setModalEliminarVisible(false)}
       />
 
-      {/* <UpdateVenta
+      <UpdateVenta
         show={modalEditarVisible}
         venta={ventaEditando}
         onSave={guardarVentasEditado}
         onCancel={() => setModalEditarVisible(false)}
-      /> */}
+      />
 
       {mostrarMensaje && (
         <Toast
@@ -210,13 +220,6 @@ function VentaProducto() {
       )}
 
       </main>
-
-      {modalVisible && (
-  <ModalAgregarVenta
-    onClose={() => setModalVisible(false)}
-    setVentas={setVentas}
-  />
-)}
     </div>
   );
 }
