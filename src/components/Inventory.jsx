@@ -9,6 +9,7 @@ import { getAllLaboratory } from "../services/laboratoryService";
 import Toast from "./Toast";
 
 
+
 function Inventory() {
     const navigate = useNavigate();
     const [productos, setProductos] = useState([]);
@@ -82,6 +83,11 @@ const confirmarEliminar = () => {
 };
 };
 
+  const handleSearch = (e) => {
+    setBusqueda(e.target.value);
+  };
+
+
   const guardarProductoEditado = (productoActualizado) => {
     updateProduct(productoActualizado.id, productoActualizado)
     .then(() => {
@@ -99,17 +105,85 @@ const confirmarEliminar = () => {
     });
   };
 
+  const generarInformePorFechas = () => {
+  if (!desde || !hasta) {
+    alert("Seleccione un rango de fechas");
+    return;
+  }
+
+  const filtrados = productos.filter((p) => {
+    return p.fecha >= desde && p.fecha <= hasta;
+  });
+
+  imprimirInforme(filtrados, `Informe del ${desde} al ${hasta}`);
+};
+
+
+const generarInformeProximosAVencer = () => {
+  const hoy = new Date();
+  const en30dias = new Date();
+  en30dias.setDate(hoy.getDate() + 30);
+
+  const filtrados = productos.filter((p) => {
+    const fechaVenc = new Date(p.vencimiento);
+    return fechaVenc >= hoy && fechaVenc <= en30dias;
+  });
+
+
+  imprimirInforme(filtrados, "Productos próximos a vencer");
+};
+
+const imprimirInforme = (lista, titulo) => {
+  const ventana = window.open("", "_blank");
+  const contenido = `
+    <html>
+    <head><title>${titulo}</title></head>
+    <body>
+      <h2>${titulo}</h2>
+      <table border="1" cellpadding="6" cellspacing="0">
+        <tr>
+          <th>Fecha Ingreso</th>
+          <th>Nombre</th>
+          <th>Cantidad</th>
+          <th>Precio</th>
+          <th>Proveedor</th>
+          <th>Laboratorio</th>
+          <th>Lote</th>
+          <th>Vencimiento</th>
+        </tr>
+        ${lista.map(p => `
+          <tr>
+            <td>${p.fecha}</td>
+            <td>${p.nombre}</td>
+            <td>${p.cantidad}</td>
+            <td>${p.precio}</td>
+            <td>${p.proveedor}</td>
+            <td>${p.lab}</td>
+            <td>${p.lote}</td>
+            <td>${p.vencimiento}</td>
+          </tr>
+        `).join("")}
+      </table>
+      <script>window.print()</script>
+    </body>
+    </html>
+  `;
+  ventana.document.write(contenido);
+  ventana.document.close();
+};
   return (
+    
     <div className="inventario-container">
+      
       <aside className="sidebar">
-  <nav className="sidebar-nav">
+  <nav className="sidebar-nav ">
     <img src={logo} alt="Logo" className="logo" />
-    <button onClick={() => navigate("/home")}>🏠 INICIO</button>
-    <button onClick={() => navigate("/laboratorio")}>🧪 LABORATORIO</button>
-    <button onClick={() => navigate("/proveedores")}>📦 PROVEEDORES</button>
-    <button onClick={() => navigate("/Productos")}>💊 PRODUCTOS</button>
-    <button onClick={() => navigate("/inventario")}>📋 INVENTARIO</button>
-    <button onClick={() => navigate("/ventaProducto")}>💰 VENTAS</button>
+    <button className="sidebar-button" onClick={() => navigate("/home")}>🏠 INICIO</button>
+    <button className="sidebar-button" onClick={() => navigate("/laboratorio")}>🧪 LABORATORIO</button>
+    <button  className="sidebar-button" onClick={() => navigate("/proveedores")}>📦 PROVEEDORES</button>
+    <button  className="sidebar-button" onClick={() => navigate("/Productos")}>💊 PRODUCTOS</button>
+    <button className="sidebar-button" onClick={() => navigate("/inventario")}>📋 INVENTARIO</button>
+    <button className="sidebar-button" onClick={() => navigate("/ventaProducto")}>💰 VENTAS</button>
   </nav>
 </aside>
 
@@ -117,16 +191,24 @@ const confirmarEliminar = () => {
         <div className="header">
           <h1>INVENTARIO</h1>
           <div className="header-icons">
-            <button>🏠</button>
+            <div className="right">
+          <input
+            type="text"
+            placeholder="Buscar..."
+            className="search"
+            value={busqueda}
+            onChange={handleSearch}
+          />
+            </div>
             <button className="logout" onClick={handleLogout}>
-            🔓 LOGOUT
+            🔓 Cerrar Sesion
           </button>
           </div>
         </div>
 
         <div className="tabla">
           <div className="tabla-header">
-            <span>FECHA DE INGRESO</span>
+            <span>F. INGRESO</span>
             <span>NOMBRE PRODUCTO</span>
             <span>CANTIDAD</span>
             <span>PRECIO</span>
@@ -166,9 +248,24 @@ const confirmarEliminar = () => {
               </span>
             </div>
           ))}
+
         </div>
 
-        <button className="informe-btn">GENERAR INFORME</button>
+        <div className="informe-section">
+          <h3>Generar Informe</h3>
+          <div className="filtros-informe">
+            <div>
+              <label>Desde:</label>
+              <input type="date" value={desde} onChange={(e) => setDesde(e.target.value)} />
+            </div>
+            <div>
+              <label>Hasta:</label>
+              <input type="date" value={hasta} onChange={(e) => setHasta(e.target.value)} />
+            </div>
+            <button onClick={generarInformePorFechas}>📄 Por Fechas de ingreso</button>
+            <button onClick={generarInformeProximosAVencer}>⚠️ Próximos a vencer</button>
+          </div>
+        </div>
 
         <ModalConfirmation
           show={modalVisible}

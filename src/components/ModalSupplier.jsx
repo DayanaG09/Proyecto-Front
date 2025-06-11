@@ -40,6 +40,7 @@ function ModalSupplier({ onClose, onRegistrar }) {
           <label>Teléfono</label>
           <input type="tel" name="phoneNumber" value={proveedor.phoneNumber || ""} onChange={handleChange} required />
 
+
           <div className="modal-buttons">
             <button type="submit" className="btn-registrar">Registrar</button>
             <button type="button" className="btn-cerrar" onClick={onClose}>Cancelar</button>

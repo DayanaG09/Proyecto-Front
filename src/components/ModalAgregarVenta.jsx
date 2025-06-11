@@ -75,10 +75,12 @@ const registrarVenta = () => {
 };
 
 
+
   return (
     <div className="modal-overlay">
       <div className="modal-content">
         <h3>Agregar Productos a la Venta</h3>
+
         <input
           type="text"
           placeholder="Buscar producto..."
@@ -86,6 +88,7 @@ const registrarVenta = () => {
           onChange={(e) => setBusqueda(e.target.value)}
           className="search-input"
         />
+
         <div className="lista-productos">
           {productosFiltrados.map((producto) => (
             <div
@@ -93,15 +96,19 @@ const registrarVenta = () => {
               className="producto-item"
               onClick={() => agregarProducto(producto)}
             >
+
               {producto.name}
+
             </div>
           ))}
         </div>
 
         <h4>Productos Seleccionados</h4>
+
         {productosSeleccionados.map((producto) => (
           <div key={producto.id} className="producto-seleccionado">
             <span>{producto.name}</span>
+
             <input
               type="number"
               placeholder="Cantidad"
@@ -110,6 +117,7 @@ const registrarVenta = () => {
                 handleCantidadChange(producto.id, e.target.value)
               }
               className="cantidad-input"
+
             />
           </div>
         ))}
@@ -128,3 +136,4 @@ const registrarVenta = () => {
 }
 
 export default ModalAgregarVenta;
+

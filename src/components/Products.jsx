@@ -3,15 +3,18 @@ import { useNavigate } from "react-router-dom";
 import ModalProducts from "./ModalProducts";
 import logo from "../assets/logo.png";
 import "../styles/home.css";
-import "../styles/vistaGeneral.css";
+import medicamento from "../assets/medicamento.png";
 import SearchBar from "./SearchBar";
 import { getAllProducts } from "../services/productService";
 import Toast from "./Toast";
 
 function Products() {
   const navigate = useNavigate();
+
   const [busqueda, setBusqueda] = useState("");
+
   const [productos, setProductos] = useState([]);
+
 
   const [mostrarModal, setMostrarModal] = useState(false);
 
@@ -87,7 +90,7 @@ const registrarProducto = () => {
             onChange={handleSearch}
           />
           <button className="logout" onClick={handleLogout}>
-            🔓 LOGOUT
+            🔓 Cerrar Sesion
           </button>
         </div>
       </header>
@@ -98,13 +101,14 @@ const registrarProducto = () => {
         <button onClick={() => goTo("/Productos")}>💊 PRODUCTOS</button>
         <button onClick={() => goTo("/proveedores")}>📦 PROVEEDORES</button>
         <button onClick={() => goTo("/ventaProducto")}>💰 VENTAS</button>
-        <button onClick={() => goTo("/inventario")}>📦 INVENTARIO</button>
+        <button onClick={() => goTo("/inventario")}>📋 INVENTARIO</button>
       </nav>
 
       <main className="home-main">
-        <div className="productos-container">
-          <h2>Lista de Productos</h2>
+        <div className="container">
+          <h2>Productos</h2>
           <div className="productos-grid">
+
             {productosFiltrados.length===0 ? (
               <p className="sin-resultados">No se encontraron productos</p>
             ) : (
@@ -120,8 +124,13 @@ const registrarProducto = () => {
                 )}))}
             
 
+
           </div>
-          <button className="btn-registrar" onClick={() => setMostrarModal(true)}>
+
+          <button
+            className="btn-registrar"
+            onClick={() => setMostrarModal(true)}
+          >
             ➕ Registrar nuevo producto
           </button>
         </div>

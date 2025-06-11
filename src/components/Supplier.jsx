@@ -23,6 +23,7 @@ function Supplier() {
     });
   }, []);
 
+
   const handleLogout = () => {
     console.log("Sesión cerrada");
     navigate("/login");
@@ -71,6 +72,7 @@ const registrarProveedor = (nuevoSup) => {
     mostrarToast("Proveedor editado correctamente");
   };
 
+
  const confirmarEliminar = () => {
   if (idAEliminar !== null) {
     deleteSupplier(idAEliminar)
@@ -96,6 +98,7 @@ const registrarProveedor = (nuevoSup) => {
     p.name.toLowerCase().includes(busqueda.toLowerCase())
   );
 
+
   return (
     <div className="home-container">
       <header className="home-header">
@@ -118,7 +121,7 @@ const registrarProveedor = (nuevoSup) => {
             onChange={handleSearch}
           />
           <button className="logout" onClick={handleLogout}>
-            🔓 LOGOUT
+            🔓 Cerrar Sesion
           </button>
         </div>
       </header>
@@ -133,9 +136,10 @@ const registrarProveedor = (nuevoSup) => {
       </nav>
 
       <main className="home-main">
-        <div className="productos-container">
-          <h2>Lista de Proveedores</h2>
+        <div>
+          <h2>Agenda de Proveedores</h2>
           <div className="productos-grid">
+
             {proveedoresFiltrados.length === 0 ? (
               <p className="sin-resultados">No se encontraron proveedores.</p>
             ) : (
@@ -173,6 +177,7 @@ const registrarProveedor = (nuevoSup) => {
                 );
               })
             )}
+
           </div>
           <button
             className="btn-registrar"

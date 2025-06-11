@@ -1,9 +1,12 @@
 .productos-container {
   padding: 1rem;
   text-align: center;
+  background-color: #638692;
+  color: #fbfdff;
+  min-height: 100%;
+  
   
 }
-
 .productos-grid {
   display: flex;
   flex-wrap: wrap;
