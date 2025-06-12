@@ -24,6 +24,12 @@ function ModalProducts({ onClose, onRegistrar }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "price" || name === "stock") {
+      const regex= /^\d*\.?\d*$/;
+      if (!regex.test(value)) {
+        return; 
+      }
+    }
     setProducto(() => ({
       ...producto,
       [name]: name === "laboratoryId" ? parseInt(value) : value,
@@ -34,6 +40,7 @@ function ModalProducts({ onClose, onRegistrar }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const response = await createProduct(producto);
     onRegistrar(response.data);
   }

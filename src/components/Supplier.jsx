@@ -49,7 +49,7 @@ function Supplier() {
   const [indexAEditar, setIndexAEditar] = useState(null);
   const [proveedorEditando, setProveedorEditando] = useState(null);
 
-const registrarProveedor = (nuevoSup) => {
+const registrarProveedor = () => {
   // En lugar de solo agregarlo al estado local, recargamos desde el backend
   getAllSupplier()
     .then((response) => {
@@ -136,7 +136,7 @@ const registrarProveedor = (nuevoSup) => {
       </nav>
 
       <main className="home-main">
-        <div>
+        <div className="container">
           <h2>Agenda de Proveedores</h2>
           <div className="productos-grid">
 

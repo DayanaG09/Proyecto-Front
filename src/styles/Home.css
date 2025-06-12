@@ -27,8 +27,8 @@ body {
   font-size: 1rem;
   transition: background-color 0.3s ease;
   position: relative;
-  top: 50px;/*para arriba */
-  left: 500px;/*para la derecha */
+  top: 40px;/*para arriba */
+  left: 80%;/*para la derecha */
 }
 
 .home-header {
@@ -60,6 +60,7 @@ body {
   text-align: center;
   flex: 15;
   margin: 10px 0;
+  position: relative;
   top: -45px;
   left: center;
 
@@ -236,6 +237,18 @@ body {
   height: 100%;
   padding: 2rem;
   color: #f0f0f0;
+}
+
+.container-ventas{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  height: 100%;
+  padding: 2rem;
 }
 
 .lista-productos {
