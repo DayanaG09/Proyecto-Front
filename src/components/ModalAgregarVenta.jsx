@@ -126,7 +126,7 @@ const registrarVenta = () => {
           <button className="btn-registrar" onClick={registrarVenta}>
             💰 VENDER
           </button>
-          <button className="btn-cancelar" onClick={onClose}>
+          <button className="btn-cerrar" onClick={onClose}>
             ❌ CANCELAR
           </button>
         </div>

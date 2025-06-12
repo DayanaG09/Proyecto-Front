@@ -116,7 +116,7 @@ function Supplier() {
       </nav>
 
       <main className="home-main">
-        <div>
+        <div className="container">
           <h2>Agenda de Proveedores</h2>
           <div className="productos-grid">
             {proveedoresFiltrados.length === 0 ? (

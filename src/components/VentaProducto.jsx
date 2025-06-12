@@ -135,8 +135,7 @@ function VentaProducto() {
         <button onClick={() => goTo("/inventario")}>📦 INVENTARIO</button>
       </nav>
 
-      <main className="home-main">
-        <div>
+      <div>
           <button
             className="home-button"
             onClick={() => setModalRegistrarVisible(true)}
@@ -144,7 +143,9 @@ function VentaProducto() {
             ➕ AGREGAR VENTA
           </button>
         </div>
-        <div className="productos-container">
+      <main className="home-main">
+        
+        <div className="container">
           <h3>Ventas Realizadas</h3>
           <div className="productos-grid">
             { ventas.length===0 ? (

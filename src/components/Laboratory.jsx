@@ -120,7 +120,7 @@ function Laboratory() {
       </nav>
 
       <main className="home-main">
-        <div>
+        <div className="container">
           <h2>Lista de Laboratorios</h2>
           <div className="productos-grid">
             {laboratoriosFiltrados.length === 0 ? (

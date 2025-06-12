@@ -1,19 +1,28 @@
 import React, { useState } from "react";
 import "../styles/forgotPassword.css"; // Para los estilos del modal";
 import { requestPasswordReset } from "../services/passwordService";
+import Toast from "./Toast";
 
 function ForgotPassword({ show, handleClose }) {
   const [email, setEmail] = useState("");
+
+  const [mensajeToast, setMensajeToast] = useState("");
+    const [mostrarMensaje, setMostrarMensaje] = useState(false);
+  
+    const mostrarToast = (mensaje) => {
+      setMensajeToast(mensaje);
+      setMostrarMensaje(true);
+    };
 
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
     await requestPasswordReset(email);
-    alert("Si los datos existen, se enviará un correo con instrucciones.");
+     mostrarToast("se enviará un correo con instrucciones.");
   } catch (error) {
     console.error("Error al enviar solicitud:", error);
-    alert("Hubo un error. Intenta nuevamente.");
+     mostrarToast("Hubo un error. Intenta nuevamente.");
   }
 
   handleClose();
@@ -25,7 +34,7 @@ const handleSubmit = async (e) => {
     <div className="modal-backdrop">
       <div className="modal-container">
         <div className="modal-header">
-          <h2>Recuperar contraseña</h2>
+          <div className="titl"><h2>Recuperar contraseña</h2></div>
           <button onClick={handleClose} className="close-btn">
             ×
           </button>
@@ -46,6 +55,12 @@ const handleSubmit = async (e) => {
           </button>
         </form>
       </div>
+      {mostrarMensaje && (
+          <Toast
+            mensaje={mensajeToast}
+            onClose={() => setMostrarMensaje(false)}
+          />
+        )}
     </div>
   );
 }

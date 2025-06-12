@@ -10,6 +10,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import Inventory from './components/Inventory'
 import Supplier from './components/Supplier'
 import ResetPassword from './components/ResetPassword'
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 
