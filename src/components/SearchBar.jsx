@@ -1,14 +1,14 @@
 import React from "react";
 import "../styles/searchBar.css"; // Opcional para personalización
 
-function SearchBar({ busqueda, onBusquedaChange }) {
+function SearchBar({ busqueda, onChange, placeholder }) {
   return (
     <div className="search-bar">
       <input
         type="text"
-        placeholder="Buscar productos..."
+        placeholder={placeholder || "Buscar..."}
         value={busqueda}
-        onChange={(e) => onBusquedaChange(e.target.value)}
+        onChange={onChange}
         className="search-input"
       />
     </div>
