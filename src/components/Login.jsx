@@ -5,7 +5,7 @@ import "../styles/login.css";
 import logo from "../assets/logo.png";
 import ForgotPassword from "./ForgotPasswords";
 import ResetPassword from "./ResetPassword";
-
+import Toast from "./Toast";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -15,6 +15,14 @@ function Login() {
   const [resetToken, setResetToken] = useState(null);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  const [mensajeToast, setMensajeToast] = useState("");
+  const [mostrarMensaje, setMostrarMensaje] = useState(false);
+
+  const mostrarToast = (mensaje) => {
+    setMensajeToast(mensaje);
+    setMostrarMensaje(true);
+  };
 
   useEffect(() => {
     const token = searchParams.get("token");
@@ -38,7 +46,8 @@ function Login() {
       goTo("/home")
     } catch (error) {
       console.error("Login fallido:", error);
-      alert("Correo o contraseña incorrectos");
+       mostrarToast("Correo o contraseña incorrectos");
+
     }
   };
 
@@ -95,6 +104,12 @@ function Login() {
           setResetToken(null);
         }}
       />
+      {mostrarMensaje && (
+          <Toast
+            mensaje={mensajeToast}
+            onClose={() => setMostrarMensaje(false)}
+          />
+        )}
     </div>
   );
 }

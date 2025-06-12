@@ -2,10 +2,11 @@
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #4caf50;
+  background-color: #5298c0;
   color: white;
   padding: 14px 22px;
   border-radius: 8px;
+  border-color: black;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   z-index: 9999;
   animation: aparecer 0.3s ease;

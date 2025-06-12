@@ -2,11 +2,20 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/resetPassword.css"; // Estilos personalizados
 import { resetPassword } from "../services/passwordService"; // Función que llama a tu backend
+import Toast from "./Toast";
 
 function ResetPassword({ show, token, handleClose }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+
+  const [mensajeToast, setMensajeToast] = useState("");
+  const [mostrarMensaje, setMostrarMensaje] = useState(false);
+
+  const mostrarToast = (mensaje) => {
+    setMensajeToast(mensaje);
+    setMostrarMensaje(true);
+  };
 
   if (!show) return null;
 
@@ -14,19 +23,20 @@ function ResetPassword({ show, token, handleClose }) {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Las contraseñas no coinciden.");
+       mostrarToast("Las contraseñas no coinciden.");
       return;
     }
 
     try {
       await resetPassword(token, password);
-      alert("Contraseña actualizada con éxito.");
+       mostrarToast("Contraseña actualizada con éxito.");
+      
 
       handleClose();               // Cierra el modal
       navigate("/login", { replace: true }); // Redirige y limpia la URL
     } catch (error) {
       console.error("Error al actualizar contraseña:", error);
-      alert("Error al actualizar la contraseña. Intenta nuevamente.");
+       mostrarToast("Error al actualizar la contraseña. Intenta nuevamente.");
     }
   };
 
@@ -55,6 +65,12 @@ function ResetPassword({ show, token, handleClose }) {
           <button type="submit" className="submit-btn">Actualizar</button>
         </form>
       </div>
+      {mostrarMensaje && (
+          <Toast
+            mensaje={mensajeToast}
+            onClose={() => setMostrarMensaje(false)}
+          />
+        )}
     </div>
   );
 }
