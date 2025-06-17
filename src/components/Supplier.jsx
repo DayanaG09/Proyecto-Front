@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ModalSupplier from "./ModalSupplier";
 import logo from "../assets/logo.png";
-import "../styles/home.css";
+import "../styles/Home.css";
 import "../styles/vistaGeneral.css";
 import { deleteSupplier, getAllSupplier } from "../services/supplierService";
 import Toast from "./Toast";

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ModalProducts from "./ModalProducts";
 import logo from "../assets/logo.png";
-import "../styles/home.css";
+import "../styles/Home.css";
 import medicamento from "../assets/medicamento.png";
 import SearchBar from "./SearchBar";
 import { getActiveProducts } from "../services/productService";
