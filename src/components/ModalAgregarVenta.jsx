@@ -47,7 +47,7 @@ const registrarVenta = () => {
   ) {
     alert("Completa correctamente todas las cantidades.");
     return;
-  }
+  }else{
 
   const payload = {
     saleDate: new Date().toISOString(), // Fecha actual
@@ -72,8 +72,11 @@ const registrarVenta = () => {
       console.error("Error al registrar la venta:", error);
       alert("Error al registrar la venta.");
     });
-};
+}};
 
+  const quitarProductoSeleccionado = (id) => {
+    setProductosSeleccionados((prev) => prev.filter((p) => p.id !== id));
+  };
 
 
   return (
@@ -108,7 +111,6 @@ const registrarVenta = () => {
         {productosSeleccionados.map((producto) => (
           <div key={producto.id} className="producto-seleccionado">
             <span>{producto.name}</span>
-
             <input
               type="number"
               placeholder="Cantidad"
@@ -117,8 +119,19 @@ const registrarVenta = () => {
                 handleCantidadChange(producto.id, e.target.value)
               }
               className="cantidad-input"
-
+              required
+              min={1}
+              max={producto.stock}
             />
+            <button
+              type="button"
+              className="btn-quitar"
+              onClick={() => quitarProductoSeleccionado(producto.id)}
+              style={{ marginLeft: "8px", background: "none", border: "none", color: "#f43636", fontWeight: "bold", cursor: "pointer", fontSize: "1.2rem" }}
+              title="Quitar producto"
+            >
+              ❌
+            </button>
           </div>
         ))}
 
