@@ -4,7 +4,7 @@ import ModalLaboratory from "./ModalLaboratory";
 import ModalConfirmation from "./ModalConfirmation";
 import UpdateLaboratory from "./UpdateLaboratory";
 import logo from "../assets/logo.png";
-import "../styles/home.css";
+import "../styles/Home.css";
 import "../styles/vistaGeneral.css";
 import { deleteLaboratory, getAllLaboratory, updateLaboratory } from "../services/laboratoryService";
 import Toast from "./Toast";
