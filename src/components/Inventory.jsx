@@ -8,11 +8,13 @@ import { disableProduct, getActiveProducts, updateProduct } from "../services/pr
 import { getAllLaboratory } from "../services/laboratoryService";
 import Toast from "./Toast";
 import SearchBar from "./SearchBar"; // 👉 Nuevo componente
+import { getAllSupplier } from "../services/supplierService";
 
 function Inventory() {
   const navigate = useNavigate();
   const [productos, setProductos] = useState([]);
   const [laboratorios, setLaboratorios] = useState([]);
+  const [proveedores, setProveedores] = useState([]);
 
   const [busqueda, setBusqueda] = useState(""); // 👉 Estado para búsqueda
 
@@ -37,12 +39,22 @@ function Inventory() {
     getAllLaboratory()
       .then((response) => setLaboratorios(response.data))
       .catch((error) => console.log("Error al cargar laboratorios: ", error));
-  }, []);
+
+    getAllSupplier().then((res) => {
+          setProveedores(res.data);
+        }).catch((err) => console.error("Error al cargar proveedores", err));
+    }, []);
 
   const getNombreLaboratorio = (id) => {
     const lab = laboratorios.find((l) => l.id === id);
     return lab ? lab.name : "Desconocido";
   };
+
+  const getNombreProveedor = (id) => {
+  const proveedor = proveedores.find((s) => s.id === id);
+  return proveedor ? proveedor.name : "Desconocido";
+};
+
 
   const mostrarToast = (mensaje) => {
     setMensajeToast(mensaje);
@@ -91,22 +103,38 @@ function Inventory() {
       return;
     }
 
-    const filtrados = productos.filter((p) => p.fecha >= desde && p.fecha <= hasta);
+    const desdeDate = new Date(desde);
+    const hastaDate = new Date(hasta);
+
+    const filtrados = productos.filter((p) => {
+      const fechaIngreso = new Date(p.issueDate);
+      return fechaIngreso >= desdeDate && fechaIngreso <= hastaDate;
+    });
+
     imprimirInforme(filtrados, `Informe del ${desde} al ${hasta}`);
   };
 
-  const generarInformeProximosAVencer = () => {
-    const hoy = new Date();
-    const en30dias = new Date();
-    en30dias.setDate(hoy.getDate() + 30);
+const generarInformeProximosAVencer = () => {
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0); // Normaliza hora
 
-    const filtrados = productos.filter((p) => {
-      const fechaVenc = new Date(p.vencimiento);
-      return fechaVenc >= hoy && fechaVenc <= en30dias;
-    });
+  const en30dias = new Date();
+  en30dias.setDate(hoy.getDate() + 100);
+  en30dias.setHours(23, 59, 59, 999);
 
-    imprimirInforme(filtrados, "Productos próximos a vencer");
-  };
+  const filtrados = productos.filter((p) => {
+    if (!p.expirationDate) return false;
+
+    const [anio, mes, dia] = p.expirationDate.split("-"); // Asegúrate que sea yyyy-mm-dd
+    const fechaVenc = new Date(anio, mes - 1, dia);
+
+    return fechaVenc >= hoy && fechaVenc <= en30dias;
+  });
+
+  imprimirInforme(filtrados, "Productos próximos a vencer en 100 días");
+};
+
+
 
   const imprimirInforme = (lista, titulo) => {
     const ventana = window.open("", "_blank");
@@ -121,21 +149,21 @@ function Inventory() {
             <th>Nombre</th>
             <th>Cantidad</th>
             <th>Precio</th>
-            <th>Proveedor</th>
+            th>Proveedor</th>
             <th>Laboratorio</th>
             <th>Lote</th>
             <th>Vencimiento</th>
           </tr>
           ${lista.map(p => `
             <tr>
-              <td>${p.fecha}</td>
-              <td>${p.nombre}</td>
-              <td>${p.cantidad}</td>
-              <td>${p.precio}</td>
-              <td>${p.proveedor}</td>
-              <td>${p.lab}</td>
-              <td>${p.lote}</td>
-              <td>${p.vencimiento}</td>
+              <td>${p.issueDate || "-"}</td>
+              <td>${p.name || "-"}</td>
+              <td>${p.stock || 0}</td>
+              <td>${p.price || "-"}</td>
+              <td>${getNombreProveedor(p.supplierId) || "-"}</td>
+              <td>${getNombreLaboratorio(p.laboratoryId) || "-"}</td>
+              <td>${p.batch || "-"}</td>
+              <td>${p.expirationDate || "-"}</td>
             </tr>
           `).join("")}
         </table>
@@ -185,6 +213,7 @@ function Inventory() {
             <span>NOMBRE PRODUCTO</span>
             <span>CANTIDAD</span>
             <span>PRECIO</span>
+            <span>PROVEEDOR</span>
             <span>LAB</span>
             <span>LOT</span>
             <span>F.VENCIMIEN</span>
@@ -197,6 +226,7 @@ function Inventory() {
               <span>{p.name}</span>
               <span>{p.stock}</span>
               <span>{p.price}</span>
+              <span>{getNombreProveedor(p.supplierId)}</span>
               <span>{getNombreLaboratorio(p.laboratoryId)}</span>
               <span>{p.batch}</span>
               <span>{p.expirationDate}</span>
@@ -244,6 +274,7 @@ function Inventory() {
           onSave={guardarProductoEditado}
           onCancel={() => setModalEditarVisible(false)}
           laboratorios={laboratorios}
+          proveedores={proveedores}
         />
 
         {mostrarMensaje && (

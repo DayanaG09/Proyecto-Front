@@ -29,11 +29,11 @@ function ResetPassword({ show, token, handleClose }) {
 
     try {
       await resetPassword(token, password);
-       mostrarToast("Contraseña actualizada con éxito.");
-      
-
       handleClose();               // Cierra el modal
-      navigate("/login", { replace: true }); // Redirige y limpia la URL
+      navigate("/login", { 
+        replace: true, 
+        state: { toast: "Contraseña actualizada exitosamente." }
+      }); // Redirige y limpia la URL
     } catch (error) {
       console.error("Error al actualizar contraseña:", error);
        mostrarToast("Error al actualizar la contraseña. Intenta nuevamente.");

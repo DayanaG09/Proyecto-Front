@@ -153,7 +153,9 @@ function VentaProducto() {
                 No se encontraron ventas.
               </p>
             ) : (
-          ventas.map((venta) => {
+          ventas.slice() // copia para no mutar el estado
+      .sort((a, b) => new Date(a.saleDate) - new Date(b.saleDate)) // ascendente
+      .map((venta) => {
 
             return(
               <div className="ventas-card" key={venta.id}>

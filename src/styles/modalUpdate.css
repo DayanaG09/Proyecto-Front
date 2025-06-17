@@ -8,6 +8,10 @@
   background-color: #86acba63 ;
 }
 
+.modal-content-update {
+  width: 70% !important;
+}
+
 .modal-box {
   background: #86acba;
   padding: 3%;

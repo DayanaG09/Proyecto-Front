@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { loginUser } from "../services/authService";
 import "../styles/login.css";
 import logo from "../assets/logo.png";
@@ -23,6 +23,8 @@ function Login() {
     setMensajeToast(mensaje);
     setMostrarMensaje(true);
   };
+  
+  const location = useLocation();
 
   useEffect(() => {
     const token = searchParams.get("token");
@@ -30,7 +32,13 @@ function Login() {
       setResetToken(token);
       setShowResetModal(true);
     }
-  }, [searchParams]);
+
+    if (location.state && location.state.toast) {
+      mostrarToast(location.state.toast);
+      // Limpia el estado para que no se muestre de nuevo si el usuario refresca
+      window.history.replaceState({}, document.title);
+    }
+  }, [searchParams, location.state]);
   
   const goTo = (ruta) => {
     navigate(ruta);
