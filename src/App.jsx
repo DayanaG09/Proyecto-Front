@@ -3,7 +3,7 @@
 import './App.css'
 import Login from './components/Login'
 import Home from './components/Home'
-import Products from './components/products'
+import Products from './components/Products'
 import Laboratory from './components/Laboratory'
 import VentaProducto from './components/VentaProducto'
 import { Routes, Route, Navigate } from 'react-router-dom'
