@@ -71,9 +71,9 @@ const registrarProducto = () => {
   return (
     <div className="home-container">
       <header className="home-header">
-        <div className="left">
+        
           <img src={logo} alt="Logo Haybet" className="logo" />
-        </div>
+        
         <div className="center">
           <h1>
             SISTEMA DE INVENTARIO
@@ -82,6 +82,9 @@ const registrarProducto = () => {
           </h1>
         </div>
         <div className="right">
+          <button className="logout" onClick={handleLogout}>
+            🔓 Cerrar Sesion
+          </button>
           <input
             type="text"
             placeholder="Buscar..."
@@ -89,9 +92,7 @@ const registrarProducto = () => {
             value={busqueda}
             onChange={handleSearch}
           />
-          <button className="logout" onClick={handleLogout}>
-            🔓 Cerrar Sesion
-          </button>
+          
         </div>
       </header>
 

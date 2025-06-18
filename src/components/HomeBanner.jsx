@@ -17,15 +17,15 @@ function HomeBanner() {
   }, []);
 
   return (
-    <main className="home-main">
-      <div className="banner-container">
+   
+      <div >
         <img
           src={imagenes[indice]}
           alt={`Banner ${indice + 1}`}
           className="banner-img"
         />
       </div>
-    </main>
+    
   );
 }
 

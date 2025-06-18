@@ -1,27 +1,16 @@
-.home-main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  padding: 2rem;
-  background-color: #4a6c78;
-}
+
 
 .banner-container {
-  width: 100%;
-  max-width: 45%;
+  width: 40%;
+  max-width: 40%;
   overflow: hidden;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     position: center;
 }
 
-.banner-img {
-  width: 100%;
-  padding: auto;
-  height: auto;
-    max-height: -10px;
-  object-fit: cover;
-  border-radius: 10px;
-  transition: opacity 0.5s ease-in-out;
+
+div {
+    display: block;
+    unicode-bidi: isolate;
 }

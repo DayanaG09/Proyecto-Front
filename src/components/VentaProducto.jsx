@@ -109,9 +109,9 @@ function VentaProducto() {
   return (
     <div className="home-container">
       <header className="home-header">
-        <div className="left">
+        
           <img src={logo} alt="Logo Haybet" className="logo" />
-        </div>
+        
         <div className="center">
           <h1>
             SISTEMA DE INVENTARIO
@@ -132,7 +132,7 @@ function VentaProducto() {
         <button onClick={() => goTo("/Productos")}>💊 PRODUCTOS</button>
         <button onClick={() => goTo("/proveedores")}>📦 PROVEEDORES</button>
         <button onClick={() => goTo("/VentaProducto")}>💰 VENTAS</button>
-        <button onClick={() => goTo("/inventario")}>📦 INVENTARIO</button>
+        <button onClick={() => goTo("/inventario")}>📋 INVENTARIO</button>
       </nav>
 
       <div>

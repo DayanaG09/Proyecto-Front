@@ -33,14 +33,16 @@ const handleSubmit = async (e) => {
   return (
     <div className="modal-backdrop">
       <div className="modal-container">
-        <div className="modal-header">
-          <div className="titl"><h2>Recuperar contraseña</h2></div>
+        <div className="titulo">
+          
+          <div><h2>Recuperar contraseña</h2></div>
+          
           <button onClick={handleClose} className="close-btn">
             ×
           </button>
         </div>
         <p className="modal-text">
-          Ingresa tu correo o número de documento para recuperar tu contraseña
+          Ingresa tu correo  para recuperar tu contraseña
         </p>
         <form onSubmit={handleSubmit} className="form">
           <input
@@ -50,7 +52,7 @@ const handleSubmit = async (e) => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <button type="submit" className="submit-btn">
+          <button type="submit" className="btn-submit">
             Enviar solicitud
           </button>
         </form>

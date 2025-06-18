@@ -102,9 +102,9 @@ const registrarProveedor = () => {
   return (
     <div className="home-container">
       <header className="home-header">
-        <div className="left">
+        
           <img src={logo} alt="Logo Haybet" className="logo" />
-        </div>
+        
         <div className="center">
           <h1>
             SISTEMA DE INVENTARIO
@@ -113,6 +113,9 @@ const registrarProveedor = () => {
           </h1>
         </div>
         <div className="right">
+          <button className="logout" onClick={handleLogout}>
+            🔓 Cerrar Sesion
+          </button>
           <input
             type="text"
             placeholder="Buscar..."
@@ -120,9 +123,7 @@ const registrarProveedor = () => {
             value={busqueda}
             onChange={handleSearch}
           />
-          <button className="logout" onClick={handleLogout}>
-            🔓 Cerrar Sesion
-          </button>
+          
         </div>
       </header>
 
@@ -132,7 +133,7 @@ const registrarProveedor = () => {
         <button onClick={() => goTo("/Productos")}>💊 PRODUCTOS</button>
         <button onClick={() => goTo("/proveedores")}>📦 PROVEEDORES</button>
         <button onClick={() => goTo("/ventaProducto")}>💰 VENTAS</button>
-        <button onClick={() => goTo("/inventario")}>📦 INVENTARIO</button>
+        <button onClick={() => goTo("/inventario")}>📋 INVENTARIO</button>
       </nav>
 
       <main className="home-main">
