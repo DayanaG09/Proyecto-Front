@@ -59,9 +59,9 @@ function Products() {
   return (
     <div className="home-container">
       <header className="home-header">
-        <div className="left">
+        
           <img src={logo} alt="Logo Haybet" className="logo" />
-        </div>
+        
         <div className="center">
           <h1>
             SISTEMA DE INVENTARIO
@@ -70,10 +70,19 @@ function Products() {
           </h1>
         </div>
         <div className="right">
-          <SearchBar valor={busqueda} onChange={(e) => setBusqueda(e.target.value)} placeholder="Buscar producto..." />
+
           <button className="logout" onClick={handleLogout}>
-            🔓 Cerrar Sesión
+            🔓 Cerrar Sesion
           </button>
+          <input
+            type="text"
+            placeholder="Buscar..."
+            className="search"
+            value={busqueda}
+            onChange={handleSearch}
+          />
+          
+
         </div>
       </header>
 

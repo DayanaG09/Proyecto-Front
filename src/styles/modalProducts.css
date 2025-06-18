@@ -12,13 +12,14 @@
 }
 
 .modal {
-  background-color: #638692;
+  background-color: #7e999f;
   padding: 2rem;
   border-radius: 12px;
   width: 400px;
   max-width: 90%;
   box-shadow: 0 0 15px rgba(7, 0, 0, 0.3);
   color: #ffffff;
+  text-shadow: #000000 2px 2px 4px;
 }
 
 .modal .formulario input {

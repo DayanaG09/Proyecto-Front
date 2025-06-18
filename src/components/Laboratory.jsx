@@ -92,9 +92,8 @@ function Laboratory() {
   return (
     <div className="home-container">
       <header className="home-header">
-        <div className="left">
           <img src={logo} alt="Logo Haybet" className="logo" />
-        </div>
+        
         <div className="center">
           <h1>
             SISTEMA DE INVENTARIO
@@ -103,10 +102,16 @@ function Laboratory() {
           </h1>
         </div>
         <div className="right">
-          <SearchBar valor={busqueda} onChange={(e) => setBusqueda(e.target.value)} placeholder="Buscar laboratorio..."/>
-          <button className="logout" onClick={handleLogout}>
-            🔓 Cerrar Sesión
-          </button>
+
+           <button className="logout" onClick={handleLogout}>🔓 Cerrar Sesion</button>
+          <input
+            type="text"
+            placeholder="Buscar..."
+            className="search"
+            value={busqueda}
+            onChange={handleSearch}
+          />
+       
         </div>
       </header>
 
@@ -116,7 +121,7 @@ function Laboratory() {
         <button onClick={() => goTo("/Productos")}>💊 PRODUCTOS</button>
         <button onClick={() => goTo("/proveedores")}>📦 PROVEEDORES</button>
         <button onClick={() => goTo("/ventaProducto")}>💰 VENTAS</button>
-        <button onClick={() => goTo("/inventario")}>📦 INVENTARIO</button>
+        <button onClick={() => goTo("/inventario")}>📋 INVENTARIO</button>
       </nav>
 
       <main className="home-main">

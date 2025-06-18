@@ -41,10 +41,10 @@ function Home() {
 
   return (
     <div className="home-container">
+    
       <header className="home-header">
-        <div className="left">
-          <img src={logo} alt="Logo Haybet" className="logo" />
-        </div>
+         <img src={logo} alt="Logo Haybet" className="logo"/>
+        
         <div className="center">
           <h1>
             SISTEMA DE INVENTARIO
@@ -53,13 +53,13 @@ function Home() {
           </h1>
         </div>
         <div className="right">
-          
-          <button className="low-stock-button" onClick={showLowStockProducts}>
-            ⚠️ Stock Bajo
-          </button>
           <button className="logout" onClick={handleLogout}>
             🔓 Cerrar Sesion
           </button>
+          <button className="low-stock-button" onClick={showLowStockProducts}>
+            ⚠️ Stock Bajo
+          </button>
+          
         </div>
       </header>
 
@@ -69,14 +69,18 @@ function Home() {
         <button onClick={() => goTo("/Productos")}>💊 PRODUCTOS</button>
         <button onClick={() => goTo("/proveedores")}>📦 PROVEEDORES</button>
         <button onClick={() => goTo("/ventaProducto")}>💰 VENTAS</button>
-        <button onClick={() => goTo("/inventario")}>📦 INVENTARIO</button>
+        <button onClick={() => goTo("/inventario")}>📋 INVENTARIO</button>
       </nav>
 
-      <main className="home-main">
+      <main className="main-home">
+        <div className="banner-img">
         <HomeBanner />
+        </div>
+        
       </main>
-
-     
+      
+        
+      
       <ModalStock
         isOpen={isLowStockModalOpen}
         onClose={closeLowStockModal}

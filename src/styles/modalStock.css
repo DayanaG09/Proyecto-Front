@@ -13,31 +13,25 @@
 }
 
 .modal-content {
-  background:#4a6c78(204, 0, 0);
-  padding: 25px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 600px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  display: flex;
+  background-color: #7e999f !important;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 100%;
   flex-direction: column;
-  max-height: 80vh; /* Limita la altura máxima del modal al 80% del viewport */
-  overflow: hidden; /* Importante para que el scrollbar aparezca dentro del modal-body, no en el modal-content */
+  display: flex;
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
+  font-size: 1rem;
 }
 
 .modal-header h2 {
   margin: 0;
   font-size: 1.5em;
-  color: #6d0d0d;
+  color: #fefefe;
   position: relative;
 text-align: center;
 width: 100%; 

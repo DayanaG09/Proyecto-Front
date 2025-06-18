@@ -84,9 +84,9 @@ function Supplier() {
   return (
     <div className="home-container">
       <header className="home-header">
-        <div className="left">
+        
           <img src={logo} alt="Logo Haybet" className="logo" />
-        </div>
+        
         <div className="center">
           <h1>
             SISTEMA DE INVENTARIO
@@ -95,14 +95,20 @@ function Supplier() {
           </h1>
         </div>
         <div className="right">
-          <SearchBar
+
+          <button className="logout" onClick={handleLogout}>
+            🔓 Cerrar Sesion
+          </button>
+          <input
+            type="text"
+            placeholder="Buscar..."
+            className="search"
+
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
             placeholder="Buscar proveedor..."
           />
-          <button className="logout" onClick={handleLogout}>
-            🔓 Cerrar Sesion
-          </button>
+          
         </div>
       </header>
 
@@ -112,7 +118,7 @@ function Supplier() {
         <button onClick={() => goTo("/Productos")}>💊 PRODUCTOS</button>
         <button onClick={() => goTo("/proveedores")}>📦 PROVEEDORES</button>
         <button onClick={() => goTo("/ventaProducto")}>💰 VENTAS</button>
-        <button onClick={() => goTo("/inventario")}>📦 INVENTARIO</button>
+        <button onClick={() => goTo("/inventario")}>📋 INVENTARIO</button>
       </nav>
 
       <main className="home-main">
