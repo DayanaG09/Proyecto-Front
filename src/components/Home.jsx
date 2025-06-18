@@ -4,17 +4,13 @@ import ModalStock from "..//components/ModalStock";
 import "../styles/Home.css";
 import logo from "../assets/logo.png";
 import HomeBanner from "./HomeBanner"; 
+import { getLowStockProducts } from "../services/productService";
 
 function Home() {
   const navigate = useNavigate();
   
   const [isLowStockModalOpen, setIsLowStockModalOpen] = useState(false);
   const [lowStockProducts, setLowStockProducts] = useState([]); // Usaremos esta lista para los children
-  const [allProducts, setAllProducts] = useState([]);
-
-  useEffect(() => {
-    setAllProducts([]); // Carga simulada de todos los productos
-  }, []);
 
   const handleLogout = () => {
     console.log("Sesión cerrada");
@@ -28,10 +24,14 @@ function Home() {
   
 
   const showLowStockProducts = () => {
-    const minStock = 10;
-    const filtered = allProducts.filter(product => product.stock <= minStock);
-    setLowStockProducts(filtered); 
-    setIsLowStockModalOpen(true);
+    getLowStockProducts()
+      .then((response) => {
+        setLowStockProducts(response.data);
+        setIsLowStockModalOpen(true);
+      })
+      .catch((error) => {
+        console.error("Error al obtener productos con bajo stock", error);
+      });
   };
 
   const closeLowStockModal = () => {
@@ -84,21 +84,19 @@ function Home() {
       <ModalStock
         isOpen={isLowStockModalOpen}
         onClose={closeLowStockModal}
-        title="Productos Próximos a Agotarse"
-      >
-        
-        {lowStockProducts.length > 0 ? (
+        children={lowStockProducts.length > 0 ? (
           <ul className="low-stock-list">
             {lowStockProducts.map(product => (
               <li key={product.id}>
-                **{product.name}**: {product.stock} unidades
+                <strong>{product.name}</strong>: {product.stock} unidades
               </li>
             ))}
           </ul>
         ) : (
           <p>No hay productos próximos a agotarse. ¡El inventario está en buen estado!</p>
         )}
-      </ModalStock>
+        title="Productos Próximos a Agotarse"
+      />
     </div>
   );
 }

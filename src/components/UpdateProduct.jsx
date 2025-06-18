@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/modalUpdate.css"; // Asegúrate de tener este archivo CSS para estilos
 
-function UpdateProduct({ show, producto, onSave, onCancel, laboratorios }) {
+function UpdateProduct({ show, producto, onSave, onCancel, laboratorios, proveedores }) {
   const [editado, setEditado] = useState({});
 
   useEffect(() => {
@@ -16,7 +16,7 @@ function UpdateProduct({ show, producto, onSave, onCancel, laboratorios }) {
     const { name, value } = e.target;
     setEditado((editadoPrevido) => ({
       ...editadoPrevido,
-      [name]: name === "laboratoryId" ? parseInt(value) : value,
+      [name]: name === "laboratoryId" || name === "supplierId" ? parseInt(value) : value,
     }))
   }
 
@@ -62,6 +62,12 @@ function UpdateProduct({ show, producto, onSave, onCancel, laboratorios }) {
             value={editado.issueDate || ""}
             onChange={handleChange}
           />
+          <select name="supplierId" value={editado.supplierId || ""} onChange={handleChange}>
+            <option value="">Seleccione proveedor</option>
+            {proveedores.map((prov) => (
+              <option key={prov.id} value={prov.id}>{prov.name}</option>
+            ))}
+          </select>
           <select name="laboratoryId" value={editado.laboratoryId || ""} onChange={handleChange}>
             <option value="">Seleccione laboratorio</option>
             {laboratorios.map((lab) => (
