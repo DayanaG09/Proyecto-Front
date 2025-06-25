@@ -101,9 +101,7 @@ function Supplier() {
           </button>
           <input
             type="text"
-            placeholder="Buscar..."
             className="search"
-
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
             placeholder="Buscar proveedor..."

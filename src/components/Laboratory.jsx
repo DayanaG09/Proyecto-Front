@@ -106,10 +106,10 @@ function Laboratory() {
            <button className="logout" onClick={handleLogout}>🔓 Cerrar Sesion</button>
           <input
             type="text"
-            placeholder="Buscar..."
+            placeholder="Buscar laboratorio..."
             className="search"
             value={busqueda}
-            onChange={handleSearch}
+            onChange={(e) => setBusqueda(e.target.value)}
           />
        
         </div>

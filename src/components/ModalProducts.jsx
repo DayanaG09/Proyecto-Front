@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import "../styles/modalProducts.css"; // Estilos sugeridos abajo
 import { getAllLaboratory } from "../services/laboratoryService";
@@ -80,14 +79,15 @@ function ModalProducts({ onClose, onRegistrar }) {
             name="issueDate"
             value={producto.issueDate || ""}
             onChange={handleChange}
+            max={new Date().toISOString().split("T")[0]} // Limita la fecha a hoy
           />
-          <select name="supplierId" value={producto.supplierId || ""} onChange={handleChange}>
+          <select className="seleccion-foranea" name="supplierId" value={producto.supplierId || ""} onChange={handleChange}>
             <option value="">Seleccione proveedor</option>
             {proveedores.map((prov) => (
               <option key={prov.id} value={prov.id}>{prov.name}</option>
             ))}
           </select>
-          <select name="laboratoryId" value={producto.laboratoryId || ""} onChange={handleChange}>
+          <select className="seleccion-foranea" name="laboratoryId" value={producto.laboratoryId || ""} onChange={handleChange}>
             <option value="">Seleccione laboratorio</option>
             {laboratorios.map((lab) => (
               <option key={lab.id} value={lab.id}>{lab.name}</option>
@@ -108,6 +108,7 @@ function ModalProducts({ onClose, onRegistrar }) {
             name="expirationDate"
             value={producto.expirationDate || ""}
             onChange={handleChange}
+            min={producto.issueDate || "" } // Asegura que la fecha de vencimiento sea posterior a la fecha de ingreso
           />
           <div className="modal-buttons">
             <button type="submit">Registrar</button>
