@@ -76,10 +76,10 @@ function Products() {
           </button>
           <input
             type="text"
-            placeholder="Buscar..."
+            placeholder="Buscar productos..."
             className="search"
             value={busqueda}
-            onChange={handleSearch}
+            onChange={(e) => setBusqueda(e.target.value)}
           />
           
 

@@ -55,3 +55,8 @@
 .modal-buttons button:last-child {
   background-color: #d40000;
 }
+
+.seleccion-foranea{
+  background-color: #ffffff;
+  color: #0e0d0d;
+}

@@ -149,7 +149,7 @@ const generarInformeProximosAVencer = () => {
             <th>Nombre</th>
             <th>Cantidad</th>
             <th>Precio</th>
-            th>Proveedor</th>
+            <th>Proveedor</th>
             <th>Laboratorio</th>
             <th>Lote</th>
             <th>Vencimiento</th>

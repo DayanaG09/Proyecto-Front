@@ -49,8 +49,11 @@ const registrarVenta = () => {
     return;
   }else{
 
+    const ahora = new Date();
+    const localISO = new Date(ahora.getTime() - ahora.getTimezoneOffset() * 60000).toISOString();
+
   const payload = {
-    saleDate: new Date().toISOString(), // Fecha actual
+    saleDate: localISO, // Fecha actual en formato ISO
     detalles: productosSeleccionados.map((p) => ({
       productId: p.id,
       quantity: parseInt(p.cantidad),

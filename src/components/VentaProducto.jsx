@@ -16,6 +16,8 @@ function VentaProducto() {
   const [modalEliminarVisible, setModalEliminarVisible] = useState(false);
   const [ventaEditando, setVentaEditando] = useState(null);
   const [idAEliminar, setIdAEliminar] = useState(null);
+  const [fechaFiltro, setFechaFiltro] = useState(new Date());
+  const [mostrarTodo, setMostrarTodo] = useState(false);
 
   useEffect(() => {
     getSalesWithDetails()
@@ -26,6 +28,20 @@ function VentaProducto() {
       console.log("Error al cargar ventas: ",error)
     })
   }, [])
+
+  const ventasFiltradas = mostrarTodo
+  ? ventas
+  : ventas.filter((venta) => {
+      const fechaVenta = new Date(venta.saleDate);
+      const fechaFiltroInicio = new Date(fechaFiltro);
+      fechaFiltroInicio.setHours(0, 0, 0, 0);
+
+      const fechaFiltroFin = new Date(fechaFiltro);
+      fechaFiltroFin.setHours(23, 59, 59, 999);
+
+      return fechaVenta >= fechaFiltroInicio && fechaVenta <= fechaFiltroFin;
+    });
+
   
 
   const handleLogout = () => {
@@ -147,13 +163,41 @@ function VentaProducto() {
         
         <div className="container">
           <h3>Ventas Realizadas</h3>
+          <div className="filtros-ventas">
+            <button onClick={() => {
+              const nuevaFecha = new Date(fechaFiltro);
+              nuevaFecha.setDate(nuevaFecha.getDate() - 1);
+              setFechaFiltro(nuevaFecha);
+              setMostrarTodo(false);
+            }}>
+              ⬅ Día anterior
+            </button>
+
+            <div className="fecha-filtro">
+            <span>{fechaFiltro.toLocaleDateString()}</span>
+            </div>
+
+            <button onClick={() => {
+              const nuevaFecha = new Date(fechaFiltro);
+              nuevaFecha.setDate(nuevaFecha.getDate() + 1);
+              setFechaFiltro(nuevaFecha);
+              setMostrarTodo(false);
+            }}>
+              Día siguiente ➡
+            </button>
+
+            <button onClick={() => setMostrarTodo(true)}>
+              📜 Ver historial completo
+            </button>
+          </div>
+
           <div className="productos-grid">
             { ventas.length===0 ? (
               <p className="sin-resultados">
                 No se encontraron ventas.
               </p>
             ) : (
-          ventas.slice() // copia para no mutar el estado
+          ventasFiltradas.slice() // copia para no mutar el estado
       .sort((a, b) => new Date(a.saleDate) - new Date(b.saleDate)) // ascendente
       .map((venta) => {
 

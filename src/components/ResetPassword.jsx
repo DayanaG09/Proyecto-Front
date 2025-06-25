@@ -45,7 +45,7 @@ function ResetPassword({ show, token, handleClose }) {
       <div className="modal-container">
         <div className="modal-header">
           <h2>Restablecer contraseña</h2>
-          <button onClick={handleClose} className="close-btn">×</button>
+          <button onClick={handleClose} className="close-btn-reset">×</button>
         </div>
         <form onSubmit={handleSubmit} className="form">
           <input

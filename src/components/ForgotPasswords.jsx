@@ -37,7 +37,7 @@ const handleSubmit = async (e) => {
           
           <div><h2>Recuperar contraseña</h2></div>
           
-          <button onClick={handleClose} className="close-btn">
+          <button onClick={handleClose} className="close-btn-forgot">
             ×
           </button>
         </div>

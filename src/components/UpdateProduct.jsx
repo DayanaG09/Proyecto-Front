@@ -61,6 +61,7 @@ function UpdateProduct({ show, producto, onSave, onCancel, laboratorios, proveed
             name="issueDate"
             value={editado.issueDate || ""}
             onChange={handleChange}
+            max={new Date().toISOString().split("T")[0]} // no permite fecha futura
           />
           <select name="supplierId" value={editado.supplierId || ""} onChange={handleChange}>
             <option value="">Seleccione proveedor</option>
@@ -91,6 +92,7 @@ function UpdateProduct({ show, producto, onSave, onCancel, laboratorios, proveed
             name="expirationDate"
             value={editado.expirationDate || ""}
             onChange={handleChange}
+            min={editado.issueDate || ""} // no permite fecha anterior a ingreso
           />
 
           <div className="editar-acciones">
